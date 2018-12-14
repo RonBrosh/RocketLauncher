@@ -11,6 +11,7 @@ import com.example.ronbrosh.rocketlauncher.model.Rocket
 import kotlinx.android.synthetic.main.recyclerview_item_all_rocket_data.view.*
 
 class RocketListAdapter : ListAdapter<Rocket, RocketListAdapter.RocketListViewHolder>(ItemCallBack) {
+
     private var listener: RocketListItemClickListener? = null
 
     private companion object ItemCallBack : DiffUtil.ItemCallback<Rocket>() {
@@ -44,7 +45,6 @@ class RocketListAdapter : ListAdapter<Rocket, RocketListAdapter.RocketListViewHo
         holder.itemView.textViewRocketName.text = rocket.name
         holder.itemView.textViewRocketCountry.text = rocket.country
         holder.itemView.textViewRocketEnginesCount.text = String.format(holder.itemView.context.getString(R.string.rocket_data_engines_count_format), rocket.engine.enginesCount)
-
     }
 
     fun setRocketListItemClickListener(rocketListItemClickListener: RocketListItemClickListener?) {

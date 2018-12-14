@@ -5,5 +5,6 @@
     <string name="rocket_data_name_label">Name:</string>
     <string name="rocket_data_country_label">Country:</string>
     <string name="rocket_data_engines_count_format">%s Engines</string>
+    <string name="filter_by_active">Show only active rockets</string>
 
 </resources>

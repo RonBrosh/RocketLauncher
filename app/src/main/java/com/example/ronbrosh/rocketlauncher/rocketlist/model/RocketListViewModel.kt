@@ -32,19 +32,25 @@ class RocketListViewModel(application: Application) : ViewModel() {
     }
 
     fun fetchRocketList() {
-        rocketListLiveData.value?.let {
-            rocketApi.fetchRocketList().enqueue(object : Callback<List<Rocket>> {
-                override fun onFailure(call: Call<List<Rocket>>, t: Throwable) {
-                }
+        rocketApi.fetchRocketList().enqueue(object : Callback<List<Rocket>> {
+            override fun onFailure(call: Call<List<Rocket>>, t: Throwable) {
+            }
 
-                override fun onResponse(call: Call<List<Rocket>>, response: Response<List<Rocket>>) {
-                    response.body()?.let { result ->
-                        result.forEach { nextRocket ->
-                            rocketRepository.insertRocket(nextRocket)
-                        }
+            override fun onResponse(call: Call<List<Rocket>>, response: Response<List<Rocket>>) {
+                response.body()?.let { result ->
+                    result.forEach { nextRocket ->
+                        rocketRepository.insertRocket(nextRocket)
                     }
                 }
-            })
+            }
+        })
+    }
+
+    fun getFilteredRocketList(isFilter: Boolean): List<Rocket>? {
+        rocketListLiveData.value?.let {
+            return if (isFilter) it.filter { rocket -> rocket.isActive } else it
         }
+
+        return null
     }
 }
