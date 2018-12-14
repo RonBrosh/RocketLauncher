@@ -1,47 +1,46 @@
 package com.example.ronbrosh.rocketlauncher.rocketlist.model
 
 import android.app.Application
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import com.example.ronbrosh.rocketlauncher.api.RocketApi
-import com.example.ronbrosh.rocketlauncher.db.RocketData
-import com.example.ronbrosh.rocketlauncher.db.RocketDataRepository
+import com.example.ronbrosh.rocketlauncher.db.RocketRepository
+import com.example.ronbrosh.rocketlauncher.model.Rocket
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 class RocketListViewModel(application: Application) : ViewModel() {
-    private val rocketDataRepository: RocketDataRepository = RocketDataRepository(application)
-    private val allRocketData: LiveData<List<RocketData>>
+    private val rocketRepository: RocketRepository = RocketRepository(application)
+    private val rocketListLiveData: LiveData<List<Rocket>>
     private val rocketApi: RocketApi = RocketApi.Factory().create()
 
     init {
-        allRocketData = rocketDataRepository.getAllRocketData()
+        rocketListLiveData = rocketRepository.getRocketListLiveData()
     }
 
-    fun insertRocketData(rocketData: RocketData) {
-        rocketDataRepository.insertRocketData(rocketData)
+    fun insertRocket(rocket: Rocket) {
+        rocketRepository.insertRocket(rocket)
     }
 
-    fun getAllRocketData(): LiveData<List<RocketData>> {
-        return allRocketData
+    fun getRocketListLiveData(): LiveData<List<Rocket>> {
+        return rocketListLiveData
     }
 
-    fun deleteAllRocketData() {
-        rocketDataRepository.deleteAllRocketData()
+    fun deleteRocketTable() {
+        rocketRepository.deleteRocketTable()
     }
 
-    fun fetchRocketDataFromServer() {
-        allRocketData.value?.let {
-            rocketApi.getAllRockets().enqueue(object : Callback<List<RocketData>> {
-                override fun onFailure(call: Call<List<RocketData>>, t: Throwable) {
+    fun fetchRocketList() {
+        rocketListLiveData.value?.let {
+            rocketApi.fetchRocketList().enqueue(object : Callback<List<Rocket>> {
+                override fun onFailure(call: Call<List<Rocket>>, t: Throwable) {
                 }
 
-                override fun onResponse(call: Call<List<RocketData>>, response: Response<List<RocketData>>) {
+                override fun onResponse(call: Call<List<Rocket>>, response: Response<List<Rocket>>) {
                     response.body()?.let { result ->
-                        result.forEach { nextRocketData ->
-                            rocketDataRepository.insertRocketData(nextRocketData)
+                        result.forEach { nextRocket ->
+                            rocketRepository.insertRocket(nextRocket)
                         }
                     }
                 }

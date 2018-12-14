@@ -4,24 +4,25 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import com.example.ronbrosh.rocketlauncher.model.Rocket
 
-@Database(entities = [RocketData::class], version = 1)
-abstract class RocketDataBase : RoomDatabase() {
+@Database(entities = [Rocket::class], version = 1)
+abstract class RocketDatabase : RoomDatabase() {
 
-    abstract fun getRocketDataDao(): RocketDataDao
+    abstract fun getRocketDao(): RocketDao
 
     companion object {
-        private var instance: RocketDataBase? = null
+        private var instance: RocketDatabase? = null
 
         @Synchronized
-        fun getInstance(context: Context): RocketDataBase {
+        fun getInstance(context: Context): RocketDatabase {
             if (instance == null) {
                 instance = Room.databaseBuilder(context.applicationContext,
-                        RocketDataBase::class.java, "rocket.db")
+                        RocketDatabase::class.java, "rocket.db")
                         .fallbackToDestructiveMigration()
                         .build()
             }
-            return instance as RocketDataBase
+            return instance as RocketDatabase
         }
     }
 }

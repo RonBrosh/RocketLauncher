@@ -7,7 +7,7 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.ronbrosh.rocketlauncher.R
-import com.example.ronbrosh.rocketlauncher.db.RocketData
+import com.example.ronbrosh.rocketlauncher.model.Rocket
 import com.example.ronbrosh.rocketlauncher.rocketlist.model.RocketListViewModel
 
 class RocketListActivity : AppCompatActivity(), RocketListItemClickListener {
@@ -29,24 +29,19 @@ class RocketListActivity : AppCompatActivity(), RocketListItemClickListener {
 
         // Init view model.
         rocketListViewModel = RocketListViewModel(application)
-        rocketListViewModel.getAllRocketData().observe(this, Observer {
+        rocketListViewModel.getRocketListLiveData().observe(this, Observer {
             if (it.isEmpty())
-                rocketListViewModel.fetchRocketDataFromServer()
+                rocketListViewModel.fetchRocketList()
             else {
                 rocketListAdapter.submitList(it)
             }
         })
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        rocketListViewModel.deleteAllRocketData()
-    }
-
-    override fun onRocketItemClick(rocketData: RocketData) {
-        Toast.makeText(this, rocketData.name, Toast.LENGTH_SHORT).show()
-        var newRocketData: RocketData = rocketData.copy()
-        newRocketData.name = "test"
-        rocketListViewModel.insertRocketData(newRocketData)
+    override fun onRocketItemClick(rocket: Rocket) {
+        Toast.makeText(this, rocket.name, Toast.LENGTH_SHORT).show()
+        val newRocket: Rocket = rocket.copy()
+        newRocket.name = "test"
+        rocketListViewModel.insertRocket(newRocket)
     }
 }

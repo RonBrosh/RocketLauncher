@@ -7,18 +7,18 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.ronbrosh.rocketlauncher.R
-import com.example.ronbrosh.rocketlauncher.db.RocketData
+import com.example.ronbrosh.rocketlauncher.model.Rocket
 import kotlinx.android.synthetic.main.recyclerview_item_all_rocket_data.view.*
 
-class RocketListAdapter : ListAdapter<RocketData, RocketListAdapter.RocketListViewHolder>(ItemCallBack) {
+class RocketListAdapter : ListAdapter<Rocket, RocketListAdapter.RocketListViewHolder>(ItemCallBack) {
     private var listener: RocketListItemClickListener? = null
 
-    private companion object ItemCallBack : DiffUtil.ItemCallback<RocketData>() {
-        override fun areItemsTheSame(oldItem: RocketData, newItem: RocketData): Boolean {
+    private companion object ItemCallBack : DiffUtil.ItemCallback<Rocket>() {
+        override fun areItemsTheSame(oldItem: Rocket, newItem: Rocket): Boolean {
             return oldItem.id == newItem.id
         }
 
-        override fun areContentsTheSame(oldItem: RocketData, newItem: RocketData): Boolean {
+        override fun areContentsTheSame(oldItem: Rocket, newItem: Rocket): Boolean {
             return oldItem == newItem
         }
     }
@@ -40,10 +40,10 @@ class RocketListAdapter : ListAdapter<RocketData, RocketListAdapter.RocketListVi
     }
 
     override fun onBindViewHolder(holder: RocketListViewHolder, position: Int) {
-        val rocketData: RocketData = getItem(position)
-        holder.itemView.textViewRocketName.text = rocketData.name
-        holder.itemView.textViewRocketCountry.text = rocketData.country
-        holder.itemView.textViewRocketEnginesCount.text = String.format(holder.itemView.context.getString(R.string.rocket_data_engines_count_format), rocketData.engine.enginesCount)
+        val rocket: Rocket = getItem(position)
+        holder.itemView.textViewRocketName.text = rocket.name
+        holder.itemView.textViewRocketCountry.text = rocket.country
+        holder.itemView.textViewRocketEnginesCount.text = String.format(holder.itemView.context.getString(R.string.rocket_data_engines_count_format), rocket.engine.enginesCount)
 
     }
 
