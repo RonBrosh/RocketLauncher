@@ -38,6 +38,11 @@ class RocketListActivity : AppCompatActivity(), RocketListItemClickListener {
         })
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        rocketListViewModel.deleteRocketTable()
+    }
+
     override fun onRocketItemClick(rocket: Rocket) {
         Toast.makeText(this, rocket.name, Toast.LENGTH_SHORT).show()
         val newRocket: Rocket = rocket.copy()
