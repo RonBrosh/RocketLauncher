@@ -40,6 +40,7 @@ class RocketListActivity : AppCompatActivity(), RocketListItemClickListener, Com
             if (it.isEmpty())
                 rocketListViewModel.fetchRocketList()
             else {
+                recyclerView.scheduleLayoutAnimation()
                 rocketListAdapter.submitList(it)
             }
         })
