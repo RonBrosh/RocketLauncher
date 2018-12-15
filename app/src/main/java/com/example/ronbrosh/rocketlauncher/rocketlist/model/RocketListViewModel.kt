@@ -2,6 +2,7 @@ package com.example.ronbrosh.rocketlauncher.rocketlist.model
 
 import android.app.Application
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.ronbrosh.rocketlauncher.api.RocketApi
 import com.example.ronbrosh.rocketlauncher.db.RocketRepository
@@ -12,11 +13,13 @@ import retrofit2.Response
 
 class RocketListViewModel(application: Application) : ViewModel() {
     private val rocketRepository: RocketRepository = RocketRepository(application)
-    private val rocketListLiveData: LiveData<List<Rocket>>
     private val rocketApi: RocketApi = RocketApi.Factory().create()
+    private val rocketListLiveData: LiveData<List<Rocket>>
+    private val loadingLiveData: MutableLiveData<Boolean>
 
     init {
         rocketListLiveData = rocketRepository.getRocketListLiveData()
+        loadingLiveData = MutableLiveData()
     }
 
     fun insertRocket(rocket: Rocket) {
@@ -27,13 +30,19 @@ class RocketListViewModel(application: Application) : ViewModel() {
         return rocketListLiveData
     }
 
+    fun getLoadingLiveData(): MutableLiveData<Boolean> {
+        return loadingLiveData
+    }
+
     fun deleteRocketTable() {
         rocketRepository.deleteRocketTable()
     }
 
     fun fetchRocketList() {
+        loadingLiveData.value = true
         rocketApi.fetchRocketList().enqueue(object : Callback<List<Rocket>> {
             override fun onFailure(call: Call<List<Rocket>>, t: Throwable) {
+                loadingLiveData.value = false
             }
 
             override fun onResponse(call: Call<List<Rocket>>, response: Response<List<Rocket>>) {
@@ -42,6 +51,7 @@ class RocketListViewModel(application: Application) : ViewModel() {
                         rocketRepository.insertRocket(nextRocket)
                     }
                 }
+                loadingLiveData.value = false
             }
         })
     }

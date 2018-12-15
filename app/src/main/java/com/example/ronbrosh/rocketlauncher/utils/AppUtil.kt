@@ -22,5 +22,11 @@ class AppUtil {
         fun runOnBackgroundThread(process: () -> Unit) {
             Handler(handlerThread.looper).post(process)
         }
+
+        fun runOnBackgroundThreadAfterDelay(delay: Long, process: () -> Unit) {
+            Handler(handlerThread.looper).postDelayed({
+                process()
+            }, delay)
+        }
     }
 }

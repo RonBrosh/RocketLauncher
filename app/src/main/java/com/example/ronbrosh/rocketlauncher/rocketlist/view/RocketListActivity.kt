@@ -4,19 +4,22 @@ import android.os.Bundle
 import android.widget.CompoundButton
 import android.widget.Switch
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.ronbrosh.rocketlauncher.R
 import com.example.ronbrosh.rocketlauncher.model.Rocket
 import com.example.ronbrosh.rocketlauncher.rocketlist.model.RocketListViewModel
 
-class RocketListActivity : AppCompatActivity(), RocketListItemClickListener, CompoundButton.OnCheckedChangeListener {
+class RocketListActivity : AppCompatActivity(), RocketListItemClickListener, CompoundButton.OnCheckedChangeListener, SwipeRefreshLayout.OnRefreshListener {
     private lateinit var rocketListViewModel: RocketListViewModel
     private lateinit var rocketListAdapter: RocketListAdapter
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var switchFilterByActive: Switch
+    private lateinit var swipeRefreshLayout: SwipeRefreshLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,6 +37,10 @@ class RocketListActivity : AppCompatActivity(), RocketListItemClickListener, Com
         switchFilterByActive = findViewById(R.id.switchFilterByActive)
         switchFilterByActive.setOnCheckedChangeListener(this)
 
+        // Init swipe Refresh Layout
+        swipeRefreshLayout = findViewById(R.id.swipeRefreshLayout)
+        swipeRefreshLayout.setOnRefreshListener(this)
+
         // Init view model.
         rocketListViewModel = RocketListViewModel(application)
         rocketListViewModel.getRocketListLiveData().observe(this, Observer {
@@ -43,6 +50,11 @@ class RocketListActivity : AppCompatActivity(), RocketListItemClickListener, Com
                 recyclerView.scheduleLayoutAnimation()
                 rocketListAdapter.submitList(it)
             }
+            swipeRefreshLayout.isRefreshing = false
+        })
+
+        rocketListViewModel.getLoadingLiveData().observe(this, Observer {
+            swipeRefreshLayout.isRefreshing = it
         })
     }
 
@@ -57,5 +69,10 @@ class RocketListActivity : AppCompatActivity(), RocketListItemClickListener, Com
 
     override fun onCheckedChanged(buttonView: CompoundButton?, isChecked: Boolean) {
         rocketListAdapter.submitList(rocketListViewModel.getFilteredRocketList(isChecked))
+    }
+
+    override fun onRefresh() {
+        rocketListAdapter.submitList(null)
+        rocketListViewModel.fetchRocketList()
     }
 }
