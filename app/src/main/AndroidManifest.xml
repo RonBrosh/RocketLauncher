@@ -13,6 +13,7 @@
         tools:ignore="GoogleAppIndexingWarning">
         <activity
             android:name=".splash.view.SplashActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -23,6 +24,10 @@
         </activity>
         <activity
             android:name=".rocketlist.view.RocketListActivity"
-            android:label="@string/app_name" />
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".rocketdetails.view.RocketDetailsActivity"
+            android:screenOrientation="portrait" />
     </application>
 </manifest>

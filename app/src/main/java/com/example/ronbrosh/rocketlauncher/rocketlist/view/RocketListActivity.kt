@@ -4,14 +4,15 @@ import android.os.Bundle
 import android.widget.CompoundButton
 import android.widget.Switch
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.ronbrosh.rocketlauncher.R
 import com.example.ronbrosh.rocketlauncher.model.Rocket
+import com.example.ronbrosh.rocketlauncher.rocketdetails.view.RocketDetailsActivity
 import com.example.ronbrosh.rocketlauncher.rocketlist.model.RocketListViewModel
+
 
 class RocketListActivity : AppCompatActivity(), RocketListItemClickListener, CompoundButton.OnCheckedChangeListener, SwipeRefreshLayout.OnRefreshListener {
     private lateinit var rocketListViewModel: RocketListViewModel
@@ -50,7 +51,6 @@ class RocketListActivity : AppCompatActivity(), RocketListItemClickListener, Com
                 recyclerView.scheduleLayoutAnimation()
                 rocketListAdapter.submitList(it)
             }
-            swipeRefreshLayout.isRefreshing = false
         })
 
         rocketListViewModel.getLoadingLiveData().observe(this, Observer {
@@ -64,7 +64,7 @@ class RocketListActivity : AppCompatActivity(), RocketListItemClickListener, Com
     }
 
     override fun onRocketItemClick(rocket: Rocket) {
-
+        startActivity(RocketDetailsActivity.newIntent(this, rocket.id))
     }
 
     override fun onCheckedChanged(buttonView: CompoundButton?, isChecked: Boolean) {
