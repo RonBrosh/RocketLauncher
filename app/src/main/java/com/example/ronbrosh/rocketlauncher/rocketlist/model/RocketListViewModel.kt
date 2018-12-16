@@ -13,7 +13,6 @@ import retrofit2.Response
 
 class RocketListViewModel(application: Application) : ViewModel() {
     private val rocketRepository: RocketRepository = RocketRepository(application)
-    private val rocketApi: RocketApi = RocketApi.Factory().create()
     private val rocketListLiveData: LiveData<List<Rocket>>
     private val loadingLiveData: MutableLiveData<Boolean>
 
@@ -40,7 +39,7 @@ class RocketListViewModel(application: Application) : ViewModel() {
 
     fun fetchRocketList() {
         loadingLiveData.value = true
-        rocketApi.fetchRocketList().enqueue(object : Callback<List<Rocket>> {
+        RocketApi.Factory.getInstance().fetchRocketList().enqueue(object : Callback<List<Rocket>> {
             override fun onFailure(call: Call<List<Rocket>>, t: Throwable) {
                 loadingLiveData.value = false
             }
