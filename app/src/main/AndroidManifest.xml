@@ -28,6 +28,7 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".rocketdetails.view.RocketDetailsActivity"
+            android:parentActivityName=".rocketlist.view.RocketListActivity"
             android:screenOrientation="portrait" />
     </application>
 </manifest>

@@ -1,10 +1,11 @@
 package com.example.ronbrosh.rocketlauncher.rocketdetails.view
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
+import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import com.example.ronbrosh.rocketlauncher.R
-import android.content.Intent
 import com.example.ronbrosh.rocketlauncher.utils.Constants
 
 
@@ -21,10 +22,23 @@ class RocketDetailsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_rocket_details)
-
-        val rocketId: Long = intent.getLongExtra(INTENT_EXTRA_ROCKET_ID, Constants.NO_LONG_VALUE)
-        if (rocketId != Constants.NO_LONG_VALUE) {
-            supportActionBar?.title = "Rocket id = $rocketId"
+        supportActionBar?.let {
+            it.setDisplayHomeAsUpEnabled(true)
+            val rocketId: Long = intent.getLongExtra(INTENT_EXTRA_ROCKET_ID, Constants.NO_LONG_VALUE)
+            if (rocketId != Constants.NO_LONG_VALUE) {
+                it.title = "Rocket id = $rocketId"
+            }
         }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        when (item?.itemId) {
+            android.R.id.home -> {
+                onBackPressed()
+                return true
+            }
+        }
+
+        return super.onOptionsItemSelected(item)
     }
 }
