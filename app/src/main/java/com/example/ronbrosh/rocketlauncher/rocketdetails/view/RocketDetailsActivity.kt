@@ -3,10 +3,12 @@ package com.example.ronbrosh.rocketlauncher.rocketdetails.view
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import com.example.ronbrosh.rocketlauncher.R
 import com.example.ronbrosh.rocketlauncher.api.RocketApi
+import com.example.ronbrosh.rocketlauncher.model.Launch
 import com.example.ronbrosh.rocketlauncher.model.Rocket
 import com.example.ronbrosh.rocketlauncher.utils.Constants
 import retrofit2.Call
@@ -32,11 +34,14 @@ class RocketDetailsActivity : AppCompatActivity() {
             val rocketId: Long = intent.getLongExtra(INTENT_EXTRA_ROCKET_ID, Constants.NO_LONG_VALUE)
             if (rocketId != Constants.NO_LONG_VALUE) {
                 it.title = "Rocket id = $rocketId"
-                RocketApi.Factory.getInstance().fetchRocketLaunchesList(rocketId).enqueue(object : Callback<Void> {
-                    override fun onFailure(call: Call<Void>, t: Throwable) {
+                RocketApi.Factory.getInstance().fetchRocketLaunchesList(rocketId).enqueue(object : Callback<List<Launch>> {
+                    override fun onFailure(call: Call<List<Launch>>, t: Throwable) {
                     }
 
-                    override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                    override fun onResponse(call: Call<List<Launch>>, response: Response<List<Launch>>) {
+                        response.body()?.let { result ->
+                            Log.d("Test", result.size.toString())
+                        }
                     }
                 })
             }
