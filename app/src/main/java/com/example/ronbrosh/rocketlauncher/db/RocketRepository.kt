@@ -10,8 +10,8 @@ class RocketRepository(application: Application) {
     private val rocketListLiveData: LiveData<List<Rocket>>
 
     init {
-        val rocketDatabase: RocketDatabase = RocketDatabase.getInstance(application)
-        rocketDao = rocketDatabase.getRocketDao()
+        val rocketLauncherDatabase: RocketLauncherDatabase = RocketLauncherDatabase.getInstance(application)
+        rocketDao = rocketLauncherDatabase.getRocketDao()
         rocketListLiveData = rocketDao.getRocketListLiveData()
     }
 

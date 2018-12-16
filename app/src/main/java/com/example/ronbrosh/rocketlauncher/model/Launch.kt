@@ -1,21 +1,16 @@
 package com.example.ronbrosh.rocketlauncher.model
 
-import androidx.room.ColumnInfo
-import androidx.room.Embedded
-import androidx.room.PrimaryKey
+import androidx.room.*
 import com.google.gson.annotations.SerializedName
 
+@Entity(tableName = "launchTable", indices = [Index(value = ["rocketId", "flightNumber"], unique = true)])
 data class Launch(
-        @ColumnInfo(name = "rocketId") @PrimaryKey(autoGenerate = false) var rocketId: Long,
-        @SerializedName("flight_number") @ColumnInfo(name = "flightNumber") @PrimaryKey(autoGenerate = false) var flightNumber: Long,
+        @ColumnInfo(name = "id") @PrimaryKey(autoGenerate = true) var id: Long,
+        @ColumnInfo(name = "rocketId") var rocketId: Long,
+        @SerializedName("flight_number") @ColumnInfo(name = "flightNumber") var flightNumber: Long,
         @SerializedName("launch_year") @ColumnInfo(name = "year") var year: String,
         @SerializedName("mission_name") @ColumnInfo(name = "name") var name: String,
         @SerializedName("launch_date_unix") @ColumnInfo(name = "timeStamp") var timeStamp: Long,
         @SerializedName("launch_success") @ColumnInfo(name = "isSuccessful") var isSuccessful: Boolean,
         @Embedded @SerializedName("links") var patchImage: PatchImage
-)
-
-data class PatchImage(
-        @SerializedName("mission_patch") @ColumnInfo(name = "bigImageURL") var bigImageURL: String,
-        @SerializedName("mission_patch_small") @ColumnInfo(name = "smallImageURL") var smallImageURL: String
 )

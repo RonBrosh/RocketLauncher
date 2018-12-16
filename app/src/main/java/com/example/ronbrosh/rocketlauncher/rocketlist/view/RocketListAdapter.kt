@@ -46,7 +46,7 @@ class RocketListAdapter : ListAdapter<Rocket, RocketListAdapter.RocketListViewHo
         holder.itemView.textViewRocketName.text = rocket.name
         holder.itemView.textViewRocketCountry.text = rocket.country
         holder.itemView.textViewRocketEnginesCount.text = String.format(holder.itemView.context.getString(R.string.rocket_data_engines_count_format), rocket.engine.enginesCount)
-        Picasso.get().load(rocket.imageUrlList[0]).into(holder.itemView.imageViewPreview)
+        Picasso.get().load(rocket.imageUrlList[0]).placeholder(R.drawable.image_place_holder).into(holder.itemView.imageViewPreview)
     }
 
     fun setRocketListItemClickListener(rocketListItemClickListener: RocketListItemClickListener?) {
