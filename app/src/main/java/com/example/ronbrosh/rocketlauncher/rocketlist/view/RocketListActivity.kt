@@ -58,11 +58,6 @@ class RocketListActivity : AppCompatActivity(), RocketListItemClickListener, Com
         })
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        rocketListViewModel.deleteRocketTable()
-    }
-
     override fun onRocketItemClick(rocket: Rocket) {
         startActivity(RocketDetailsActivity.newIntent(this, rocket.id))
     }

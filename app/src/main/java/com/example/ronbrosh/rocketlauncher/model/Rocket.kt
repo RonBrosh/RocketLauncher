@@ -1,9 +1,7 @@
 package com.example.ronbrosh.rocketlauncher.model
 
-import androidx.room.ColumnInfo
-import androidx.room.Embedded
-import androidx.room.Entity
-import androidx.room.PrimaryKey
+import androidx.room.*
+import com.example.ronbrosh.rocketlauncher.db.RocketConverters
 import com.google.gson.annotations.SerializedName
 
 @Entity(tableName = "rocketTable")
@@ -12,5 +10,6 @@ data class Rocket(
         @SerializedName("rocket_name") @ColumnInfo(name = "name") var name: String,
         @SerializedName("country") @ColumnInfo(name = "country") var country: String,
         @SerializedName("active") @ColumnInfo(name = "isActive") var isActive: Boolean,
-        @Embedded @SerializedName("engines") var engine: Engine
+        @Embedded @SerializedName("engines") var engine: Engine,
+        @SerializedName("flickr_images") @TypeConverters(RocketConverters::class) @ColumnInfo(name = "imageUrlList") var imageUrlList: List<String>
 )
