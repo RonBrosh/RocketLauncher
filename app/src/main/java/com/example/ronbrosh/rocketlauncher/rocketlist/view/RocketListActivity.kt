@@ -63,10 +63,12 @@ class RocketListActivity : AppCompatActivity(), RocketListItemClickListener, Com
     }
 
     override fun onCheckedChanged(buttonView: CompoundButton?, isChecked: Boolean) {
-        rocketListAdapter.submitList(rocketListViewModel.getFilteredRocketList(isChecked))
+        if (!swipeRefreshLayout.isRefreshing)
+            rocketListAdapter.submitList(rocketListViewModel.getFilteredRocketList(isChecked))
     }
 
     override fun onRefresh() {
+        switchFilterByActive.isChecked = false
         rocketListAdapter.submitList(null)
         rocketListViewModel.fetchRocketList()
     }
