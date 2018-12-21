@@ -1,4 +1,4 @@
-package com.example.ronbrosh.rocketlauncher.db
+package com.example.ronbrosh.rocketlauncher.db.dao
 
 import androidx.lifecycle.LiveData
 import androidx.room.Dao

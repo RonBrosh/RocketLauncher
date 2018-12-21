@@ -59,7 +59,7 @@ class RocketListActivity : AppCompatActivity(), RocketListItemClickListener, Com
     }
 
     override fun onRocketItemClick(rocket: Rocket) {
-        startActivity(RocketDetailsActivity.newIntent(this, rocket.id))
+        startActivity(RocketDetailsActivity.newIntent(this, rocket.id, rocket.name))
     }
 
     override fun onCheckedChanged(buttonView: CompoundButton?, isChecked: Boolean) {

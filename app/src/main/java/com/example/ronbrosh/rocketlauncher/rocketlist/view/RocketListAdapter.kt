@@ -10,10 +10,12 @@ import com.example.ronbrosh.rocketlauncher.R
 import com.example.ronbrosh.rocketlauncher.model.Rocket
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.recyclerview_item_all_rocket_data.view.*
+import java.util.*
 
 class RocketListAdapter : ListAdapter<Rocket, RocketListAdapter.RocketListViewHolder>(ItemCallBack) {
 
     private var listener: RocketListItemClickListener? = null
+    private val random: Random = Random()
 
     private companion object ItemCallBack : DiffUtil.ItemCallback<Rocket>() {
         override fun areItemsTheSame(oldItem: Rocket, newItem: Rocket): Boolean {
@@ -46,7 +48,7 @@ class RocketListAdapter : ListAdapter<Rocket, RocketListAdapter.RocketListViewHo
         holder.itemView.textViewRocketName.text = rocket.name
         holder.itemView.textViewRocketCountry.text = rocket.country
         holder.itemView.textViewRocketEnginesCount.text = String.format(holder.itemView.context.getString(R.string.rocket_data_engines_count_format), rocket.engine.enginesCount)
-        Picasso.get().load(rocket.imageUrlList[0]).placeholder(R.drawable.image_place_holder).into(holder.itemView.imageViewPreview)
+        Picasso.get().load(rocket.imageUrlList[random.nextInt(rocket.imageUrlList.size)]).placeholder(R.drawable.image_place_holder).into(holder.itemView.imageViewPreview)
     }
 
     fun setRocketListItemClickListener(rocketListItemClickListener: RocketListItemClickListener?) {

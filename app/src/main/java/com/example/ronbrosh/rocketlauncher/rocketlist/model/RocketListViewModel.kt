@@ -5,7 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.ronbrosh.rocketlauncher.api.RocketApi
-import com.example.ronbrosh.rocketlauncher.db.RocketRepository
+import com.example.ronbrosh.rocketlauncher.db.repositories.RocketRepository
 import com.example.ronbrosh.rocketlauncher.model.Rocket
 import retrofit2.Call
 import retrofit2.Callback
@@ -38,6 +38,9 @@ class RocketListViewModel(application: Application) : ViewModel() {
     }
 
     fun fetchRocketList() {
+        if (loadingLiveData.value == true)
+            return
+
         loadingLiveData.value = true
         RocketApi.Factory.getInstance().fetchRocketList().enqueue(object : Callback<List<Rocket>> {
             override fun onFailure(call: Call<List<Rocket>>, t: Throwable) {

@@ -6,10 +6,11 @@ import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
 import com.example.ronbrosh.rocketlauncher.R
 import com.example.ronbrosh.rocketlauncher.api.RocketApi
 import com.example.ronbrosh.rocketlauncher.model.Launch
-import com.example.ronbrosh.rocketlauncher.model.Rocket
+import com.example.ronbrosh.rocketlauncher.rocketdetails.view.model.RocketDetailsViewModel
 import com.example.ronbrosh.rocketlauncher.utils.Constants
 import retrofit2.Call
 import retrofit2.Callback
@@ -17,11 +18,16 @@ import retrofit2.Response
 
 
 class RocketDetailsActivity : AppCompatActivity() {
+    private lateinit var rocketDetailsViewModel: RocketDetailsViewModel
+
     companion object {
         private const val INTENT_EXTRA_ROCKET_ID: String = "INTENT_EXTRA_ROCKET_ID"
-        fun newIntent(context: Context, rocketId: Long): Intent {
+        private const val INTENT_EXTRA_ROCKET_NAME: String = "INTENT_EXTRA_ROCKET_NAME"
+
+        fun newIntent(context: Context, rocketId: Long, rocketName: String): Intent {
             val intent = Intent(context, RocketDetailsActivity::class.java)
             intent.putExtra(RocketDetailsActivity.INTENT_EXTRA_ROCKET_ID, rocketId)
+            intent.putExtra(RocketDetailsActivity.INTENT_EXTRA_ROCKET_NAME, rocketName)
             return intent
         }
     }
@@ -29,23 +35,29 @@ class RocketDetailsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_rocket_details)
-        supportActionBar?.let {
-            it.setDisplayHomeAsUpEnabled(true)
-            val rocketId: Long = intent.getLongExtra(INTENT_EXTRA_ROCKET_ID, Constants.NO_LONG_VALUE)
-            if (rocketId != Constants.NO_LONG_VALUE) {
-                it.title = "Rocket id = $rocketId"
-                RocketApi.Factory.getInstance().fetchRocketLaunchesList(rocketId).enqueue(object : Callback<List<Launch>> {
-                    override fun onFailure(call: Call<List<Launch>>, t: Throwable) {
-                    }
 
-                    override fun onResponse(call: Call<List<Launch>>, response: Response<List<Launch>>) {
-                        response.body()?.let { result ->
-                            Log.d("Test", result.size.toString())
-                        }
-                    }
-                })
+        // Get the selected rocket id.
+        val rocketId: Long = intent.getLongExtra(INTENT_EXTRA_ROCKET_ID, Constants.NO_LONG_VALUE)
+        if (rocketId == Constants.NO_LONG_VALUE) {
+            // No rocket selected. maybe show empty details?
+            return
+        }
+
+        // Set action bar title.
+        val rocketName: String = intent.getStringExtra(INTENT_EXTRA_ROCKET_NAME)
+        rocketName.let { title ->
+            supportActionBar?.let { actionBar ->
+                actionBar.title = title
             }
         }
+
+        // Init view model.
+        rocketDetailsViewModel = RocketDetailsViewModel(application, rocketId)
+        rocketDetailsViewModel.getRocketWithLaunchListLiveData().observe(this, Observer {
+            if (it.launchList.isEmpty()) {
+                rocketDetailsViewModel.fetchRocketLaunchList(rocketId)
+            }
+        })
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {

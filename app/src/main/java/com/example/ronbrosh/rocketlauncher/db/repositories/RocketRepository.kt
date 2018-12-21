@@ -1,7 +1,9 @@
-package com.example.ronbrosh.rocketlauncher.db
+package com.example.ronbrosh.rocketlauncher.db.repositories
 
 import android.app.Application
 import androidx.lifecycle.LiveData
+import com.example.ronbrosh.rocketlauncher.db.RocketLauncherDatabase
+import com.example.ronbrosh.rocketlauncher.db.dao.RocketDao
 import com.example.ronbrosh.rocketlauncher.model.Rocket
 import com.example.ronbrosh.rocketlauncher.utils.AppUtil
 

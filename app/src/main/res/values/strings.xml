@@ -7,4 +7,6 @@
     <string name="rocket_data_engines_count_format">%s Engines</string>
     <string name="filter_by_active">Show only active rockets</string>
 
+    <!-- Rocket Details screen related -->
+
 </resources>
