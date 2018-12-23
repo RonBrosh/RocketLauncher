@@ -5,5 +5,5 @@ import androidx.room.Relation
 
 data class RocketWithLaunchList(
         @Embedded var rocket: Rocket,
-        @Relation(parentColumn = "id", entityColumn = "rocketId") var launchList: List<Launch>
+        @Relation(parentColumn = "rocketId", entityColumn = "rocketId") var launchList: List<Launch>
 )

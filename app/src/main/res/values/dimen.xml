@@ -3,11 +3,12 @@
     <!-- Spacing -->
     <dimen name="spacing_smaller">2dp</dimen>
     <dimen name="spacing_small">4dp</dimen>
-    <dimen name="spacing_normal">6dp</dimen>
+    <dimen name="spacing_normal">8dp</dimen>
     <dimen name="spacing_large">10dp</dimen>
     <dimen name="spacing_big">20dp</dimen>
 
     <!-- Text -->
+    <dimen name="text_mini">4sp</dimen>
     <dimen name="text_small">12sp</dimen>
     <dimen name="text_normal">14sp</dimen>
     <dimen name="text_big">18sp</dimen>
@@ -15,5 +16,12 @@
 
     <!-- Elevation -->
     <dimen name="elevation_normal">4dp</dimen>
+
+    <!-- Line chart -->
+    <dimen name="line_chart_axis_width">0.5dp</dimen>
+    <dimen name="line_chart_line_width">1dp</dimen>
+    <dimen name="line_chart_value_circle_hole_radius">1dp</dimen>
+    <dimen name="line_chart_value_circle_radius">2dp</dimen>
+
 
 </resources>

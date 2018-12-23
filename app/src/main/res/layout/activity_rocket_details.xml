@@ -10,5 +10,89 @@
         android:layout_height="match_parent"
         android:fillViewport="true">
 
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white">
+
+            <TextView
+                android:id="@+id/lineChartTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_normal"
+                android:gravity="center"
+                android:text="@string/launch_per_year"
+                android:textColor="@color/colorPrimary"
+                android:textSize="@dimen/text_normal"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.github.mikephil.charting.charts.LineChart
+                android:id="@+id/lineChart"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:layout_constraintDimensionRatio="1:0.6"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/lineChartTitle" />
+
+
+            <ImageView
+                android:id="@+id/imageViewPreview"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginTop="@dimen/spacing_normal"
+                android:scaleType="centerCrop"
+                android:src="@drawable/image_place_holder"
+                app:layout_constraintDimensionRatio="3:2"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/lineChart" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white75"
+                android:padding="@dimen/spacing_normal"
+                app:layout_constraintBottom_toBottomOf="@id/imageViewPreview">
+
+                <TextView
+                    android:id="@+id/textViewRocketName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="@dimen/text_very_big"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="@tools:sample/first_names" />
+
+                <TextView
+                    android:id="@+id/textViewRocketCountry"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_smaller"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="@dimen/text_big"
+                    app:layout_constraintStart_toStartOf="@+id/textViewRocketName"
+                    app:layout_constraintTop_toBottomOf="@+id/textViewRocketName"
+                    tools:text="@tools:sample/cities" />
+
+                <TextView
+                    android:id="@+id/textViewRocketEnginesCount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_marginTop="@dimen/spacing_smaller"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="@dimen/text_normal"
+                    android:textStyle="italic"
+                    app:layout_constraintStart_toStartOf="@+id/textViewRocketCountry"
+                    app:layout_constraintTop_toBottomOf="@+id/textViewRocketCountry"
+                    tools:text="100 Engines" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
 </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

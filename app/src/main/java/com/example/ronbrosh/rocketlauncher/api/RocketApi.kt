@@ -16,7 +16,7 @@ interface RocketApi {
     fun fetchRocketList(): Call<List<Rocket>>
 
     @GET("v3/launches")
-    fun fetchRocketLaunchesList(@Query("\"rocket_id\"") rocketId: Long): Call<List<Launch>>
+    fun fetchRocketLaunchesList(@Query("rocket_id") rocketId: String): Call<List<Launch>>
 
     class Factory {
         companion object {

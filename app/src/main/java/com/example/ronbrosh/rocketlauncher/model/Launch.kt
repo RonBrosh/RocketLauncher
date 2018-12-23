@@ -8,7 +8,7 @@ import com.google.gson.annotations.SerializedName
                 unique = true)])
 data class Launch(
         @ColumnInfo(name = "id") @PrimaryKey(autoGenerate = true) var id: Long,
-        @ColumnInfo(name = "rocketId") var rocketId: Long,
+        @ColumnInfo(name = "rocketId") var rocketId: String,
         @SerializedName("flight_number") @ColumnInfo(name = "flightNumber") var flightNumber: Int,
         @SerializedName("launch_year") @ColumnInfo(name = "year") var year: String,
         @SerializedName("mission_name") @ColumnInfo(name = "name") var name: String,

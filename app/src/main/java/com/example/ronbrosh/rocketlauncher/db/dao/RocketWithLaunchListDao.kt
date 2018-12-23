@@ -7,6 +7,6 @@ import com.example.ronbrosh.rocketlauncher.model.RocketWithLaunchList
 
 @Dao
 interface RocketWithLaunchListDao {
-    @Query("SELECT * from rocketTable WHERE id == :rocketId")
-    fun getRocketWithLaunchListLiveData(rocketId: Long): LiveData<RocketWithLaunchList>
+    @Query("SELECT * from rocketTable WHERE rocketId == :rocketId")
+    fun getRocketWithLaunchListLiveData(rocketId: String): LiveData<RocketWithLaunchList>
 }

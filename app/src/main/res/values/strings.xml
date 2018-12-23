@@ -8,5 +8,7 @@
     <string name="filter_by_active">Show only active rockets</string>
 
     <!-- Rocket Details screen related -->
+    <string name="launch_per_year">Launches / Year</string>
+    <string name="line_chart_no_data_text">No chart data available</string>
 
 </resources>

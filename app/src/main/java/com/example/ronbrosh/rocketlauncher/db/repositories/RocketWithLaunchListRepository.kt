@@ -9,7 +9,7 @@ import com.example.ronbrosh.rocketlauncher.model.Launch
 import com.example.ronbrosh.rocketlauncher.model.RocketWithLaunchList
 import com.example.ronbrosh.rocketlauncher.utils.AppUtil
 
-class RocketWithLaunchListRepository(application: Application, rocketId: Long) {
+class RocketWithLaunchListRepository(application: Application, rocketId: String) {
     private val rocketWithLaunchListDao: RocketWithLaunchListDao
     private val launchDao: LaunchDao
     private val rocketWithLaunchListLiveData: LiveData<RocketWithLaunchList>
