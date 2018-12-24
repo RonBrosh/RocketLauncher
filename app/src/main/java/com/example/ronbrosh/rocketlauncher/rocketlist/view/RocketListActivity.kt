@@ -16,10 +16,6 @@ import com.example.ronbrosh.rocketlauncher.R
 import com.example.ronbrosh.rocketlauncher.model.Rocket
 import com.example.ronbrosh.rocketlauncher.rocketdetails.view.RocketDetailsActivity
 import com.example.ronbrosh.rocketlauncher.rocketlist.model.RocketListViewModel
-import androidx.core.app.ActivityCompat
-import com.example.ronbrosh.rocketlauncher.R.string.view
-import androidx.core.view.ViewCompat
-import androidx.core.view.ViewCompat.setTransitionName
 
 
 class RocketListActivity : AppCompatActivity(), RocketListItemClickListener, CompoundButton.OnCheckedChangeListener, SwipeRefreshLayout.OnRefreshListener {
