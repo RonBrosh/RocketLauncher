@@ -11,6 +11,7 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
 import androidx.lifecycle.Observer
 import com.example.ronbrosh.rocketlauncher.R
 import com.example.ronbrosh.rocketlauncher.model.Launch
@@ -60,8 +61,7 @@ class RocketDetailsActivity : AppCompatActivity() {
 
         if (Build.VERSION.SDK_INT >= 21) {
             val fade = Fade()
-            val decorView = window.decorView
-            fade.excludeTarget(decorView.findViewById<View>(R.id.action_bar_container), true)
+            fade.excludeTarget(R.id.action_bar_container, true)
             fade.excludeTarget(android.R.id.statusBarBackground, true)
             fade.excludeTarget(android.R.id.navigationBarBackground, true)
             window.enterTransition = fade
