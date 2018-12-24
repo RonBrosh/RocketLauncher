@@ -5,8 +5,9 @@ import android.content.Intent
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
+import android.transition.Fade
 import android.view.MenuItem
+import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -15,9 +16,7 @@ import com.example.ronbrosh.rocketlauncher.R
 import com.example.ronbrosh.rocketlauncher.model.Launch
 import com.example.ronbrosh.rocketlauncher.model.Rocket
 import com.example.ronbrosh.rocketlauncher.rocketdetails.view.model.RocketDetailsViewModel
-import com.example.ronbrosh.rocketlauncher.utils.Constants
 import com.github.mikephil.charting.charts.LineChart
-import com.github.mikephil.charting.components.Description
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
@@ -25,7 +24,6 @@ import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.formatter.IValueFormatter
 import com.github.mikephil.charting.utils.ViewPortHandler
 import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.recyclerview_item_all_rocket_data.view.*
 import java.util.*
 
 
@@ -60,6 +58,16 @@ class RocketDetailsActivity : AppCompatActivity() {
             }
         }
 
+        if (Build.VERSION.SDK_INT >= 21) {
+            val fade = Fade()
+            val decorView = window.decorView
+            fade.excludeTarget(decorView.findViewById<View>(R.id.action_bar_container), true)
+            fade.excludeTarget(android.R.id.statusBarBackground, true)
+            fade.excludeTarget(android.R.id.navigationBarBackground, true)
+            window.enterTransition = fade
+            window.exitTransition = fade
+        }
+
         // Init view model.
         rocketDetailsViewModel = RocketDetailsViewModel(application, rocketId)
         rocketDetailsViewModel.getRocketWithLaunchListLiveData().observe(this, Observer {
@@ -90,7 +98,7 @@ class RocketDetailsActivity : AppCompatActivity() {
         findViewById<TextView>(R.id.textViewRocketName).text = rocket.name
         findViewById<TextView>(R.id.textViewRocketCountry).text = rocket.country
         findViewById<TextView>(R.id.textViewRocketEnginesCount).text = String.format(getString(R.string.rocket_data_engines_count_format), rocket.engine.enginesCount)
-        Picasso.get().load(rocket.imageUrlList[0]).placeholder(R.drawable.image_place_holder).into(findViewById<ImageView>(R.id.imageViewPreview))
+        Picasso.get().load(rocket.imageUrlList[0]).into(findViewById<ImageView>(R.id.imageViewPreview))
     }
 
     private fun initLineChart() {

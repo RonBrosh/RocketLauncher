@@ -3,7 +3,7 @@
     <!-- Spacing -->
     <dimen name="spacing_smaller">2dp</dimen>
     <dimen name="spacing_small">4dp</dimen>
-    <dimen name="spacing_normal">8dp</dimen>
+    <dimen name="spacing_normal">10dp</dimen>
     <dimen name="spacing_large">10dp</dimen>
     <dimen name="spacing_big">20dp</dimen>
 
@@ -16,6 +16,9 @@
 
     <!-- Elevation -->
     <dimen name="elevation_normal">4dp</dimen>
+
+    <!-- CardView -->
+    <dimen name="card_view_corner_radios">4dp</dimen>
 
     <!-- Line chart -->
     <dimen name="line_chart_axis_width">0.5dp</dimen>

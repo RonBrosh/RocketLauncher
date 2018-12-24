@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginStart="@dimen/spacing_normal"
@@ -10,64 +9,9 @@
     android:clickable="true"
     android:foreground="?android:attr/selectableItemBackground"
     app:cardBackgroundColor="@color/white"
+    app:cardCornerRadius="@dimen/card_view_corner_radios"
     app:cardElevation="@dimen/elevation_normal">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <ImageView
-            android:id="@+id/imageViewPreview"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/image_place_holder"
-            app:layout_constraintDimensionRatio="3:2"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/white75"
-            android:padding="@dimen/spacing_normal"
-            app:layout_constraintBottom_toBottomOf="@id/imageViewPreview">
-
-            <TextView
-                android:id="@+id/textViewRocketName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/colorPrimaryDark"
-                android:textSize="@dimen/text_very_big"
-                android:textStyle="bold"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:text="@tools:sample/first_names" />
-
-            <TextView
-                android:id="@+id/textViewRocketCountry"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/spacing_smaller"
-                android:textColor="@color/colorPrimary"
-                android:textSize="@dimen/text_big"
-                app:layout_constraintStart_toStartOf="@+id/textViewRocketName"
-                app:layout_constraintTop_toBottomOf="@+id/textViewRocketName"
-                tools:text="@tools:sample/cities" />
-
-            <TextView
-                android:id="@+id/textViewRocketEnginesCount"
-                android:layout_width="wrap_content"
-                android:layout_height="0dp"
-                android:layout_marginTop="@dimen/spacing_smaller"
-                android:textColor="@color/colorPrimaryDark"
-                android:textSize="@dimen/text_normal"
-                android:textStyle="italic"
-                app:layout_constraintStart_toStartOf="@+id/textViewRocketCountry"
-                app:layout_constraintTop_toBottomOf="@+id/textViewRocketCountry"
-                tools:text="100 Engines" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    <include layout="@layout/layout_rocket_details" />
 
 </androidx.cardview.widget.CardView>

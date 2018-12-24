@@ -7,6 +7,10 @@
     <string name="rocket_data_engines_count_format">%s Engines</string>
     <string name="filter_by_active">Show only active rockets</string>
 
+    <!-- Rocket List screen related -->
+    <string name="view">View</string>
+    <string name="rocket_details_transition_name">rocket_details_transition_name</string>
+
     <!-- Rocket Details screen related -->
     <string name="launch_per_year">Launches / Year</string>
     <string name="line_chart_no_data_text">No chart data available</string>

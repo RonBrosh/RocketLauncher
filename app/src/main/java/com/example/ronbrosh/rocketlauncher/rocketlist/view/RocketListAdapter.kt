@@ -3,19 +3,17 @@ package com.example.ronbrosh.rocketlauncher.rocketlist.view
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.ronbrosh.rocketlauncher.R
 import com.example.ronbrosh.rocketlauncher.model.Rocket
 import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.recyclerview_item_all_rocket_data.view.*
-import java.util.*
 
 class RocketListAdapter : ListAdapter<Rocket, RocketListAdapter.RocketListViewHolder>(ItemCallBack) {
-
     private var listener: RocketListItemClickListener? = null
-    private val random: Random = Random()
 
     private companion object ItemCallBack : DiffUtil.ItemCallback<Rocket>() {
         override fun areItemsTheSame(oldItem: Rocket, newItem: Rocket): Boolean {
@@ -28,13 +26,24 @@ class RocketListAdapter : ListAdapter<Rocket, RocketListAdapter.RocketListViewHo
     }
 
     inner class RocketListViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
+        private val rocketDetailsContainer: View
+        val textViewRocketName: TextView
+        val textViewRocketCountry: TextView
+        val textViewRocketEnginesCount: TextView
+        val imageViewPreview: ImageView
+
         init {
             itemView.setOnClickListener(this)
+            rocketDetailsContainer = itemView.findViewById(R.id.rocketDetailsContainer)
+            textViewRocketName = itemView.findViewById(R.id.textViewRocketName)
+            textViewRocketCountry = itemView.findViewById(R.id.textViewRocketCountry)
+            textViewRocketEnginesCount = itemView.findViewById(R.id.textViewRocketEnginesCount)
+            imageViewPreview = itemView.findViewById(R.id.imageViewPreview)
         }
 
         override fun onClick(view: View?) {
             if (adapterPosition != RecyclerView.NO_POSITION) {
-                listener?.onRocketItemClick(getItem(adapterPosition))
+                listener?.onRocketItemClick(rocketDetailsContainer, getItem(adapterPosition))
             }
         }
     }
@@ -45,10 +54,10 @@ class RocketListAdapter : ListAdapter<Rocket, RocketListAdapter.RocketListViewHo
 
     override fun onBindViewHolder(holder: RocketListViewHolder, position: Int) {
         val rocket: Rocket = getItem(position)
-        holder.itemView.textViewRocketName.text = rocket.name
-        holder.itemView.textViewRocketCountry.text = rocket.country
-        holder.itemView.textViewRocketEnginesCount.text = String.format(holder.itemView.context.getString(R.string.rocket_data_engines_count_format), rocket.engine.enginesCount)
-        Picasso.get().load(rocket.imageUrlList[random.nextInt(rocket.imageUrlList.size)]).placeholder(R.drawable.image_place_holder).into(holder.itemView.imageViewPreview)
+        holder.textViewRocketName.text = rocket.name
+        holder.textViewRocketCountry.text = rocket.country
+        holder.textViewRocketEnginesCount.text = String.format(holder.itemView.context.getString(R.string.rocket_data_engines_count_format), rocket.engine.enginesCount)
+        Picasso.get().load(rocket.imageUrlList[0]).placeholder(R.drawable.image_place_holder).into(holder.imageViewPreview)
     }
 
     fun setRocketListItemClickListener(rocketListItemClickListener: RocketListItemClickListener?) {

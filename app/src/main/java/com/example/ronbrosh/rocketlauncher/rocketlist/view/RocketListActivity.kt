@@ -1,9 +1,13 @@
 package com.example.ronbrosh.rocketlauncher.rocketlist.view
 
+import android.os.Build
 import android.os.Bundle
+import android.transition.Fade
+import android.view.View
 import android.widget.CompoundButton
 import android.widget.Switch
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityOptionsCompat
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -25,6 +29,17 @@ class RocketListActivity : AppCompatActivity(), RocketListItemClickListener, Com
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_rocket_list)
+
+        // Init window.
+        if (Build.VERSION.SDK_INT >= 21) {
+            val fade = Fade()
+            val decorView = window.decorView
+            fade.excludeTarget(decorView.findViewById<View>(R.id.action_bar_container), true)
+            fade.excludeTarget(android.R.id.statusBarBackground, true)
+            fade.excludeTarget(android.R.id.navigationBarBackground, true)
+            window.enterTransition = fade
+            window.exitTransition = fade
+        }
 
         // Init recycler view.
         recyclerView = findViewById(R.id.recyclerViewRocketData)
@@ -58,8 +73,9 @@ class RocketListActivity : AppCompatActivity(), RocketListItemClickListener, Com
         })
     }
 
-    override fun onRocketItemClick(rocket: Rocket) {
-        startActivity(RocketDetailsActivity.newIntent(this, rocket.rocketId, rocket.name))
+    override fun onRocketItemClick(view: View, rocket: Rocket) {
+        val activityOptionsCompat: ActivityOptionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(this, view, getString(R.string.rocket_details_transition_name))
+        startActivity(RocketDetailsActivity.newIntent(this, rocket.rocketId, rocket.name), activityOptionsCompat.toBundle())
     }
 
     override fun onCheckedChanged(buttonView: CompoundButton?, isChecked: Boolean) {
