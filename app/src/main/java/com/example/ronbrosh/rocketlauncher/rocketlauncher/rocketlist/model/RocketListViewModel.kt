@@ -1,4 +1,4 @@
-package com.example.ronbrosh.rocketlauncher.rocketlist.model
+package com.example.ronbrosh.rocketlauncher.rocketlauncher.rocketlist.model
 
 import android.app.Application
 import androidx.lifecycle.LiveData
