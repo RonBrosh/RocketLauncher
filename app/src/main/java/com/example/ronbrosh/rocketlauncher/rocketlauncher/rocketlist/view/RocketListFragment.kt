@@ -96,14 +96,13 @@ class RocketListFragment : Fragment(), RocketListAdapterListener, CompoundButton
             })
         }
 
-        // Scroll to last recycler view position.
+        // Notify the adapter about selected item position that is later will be used for the transition.
         bundle?.let { bundle ->
             bundle.getInt(CURRENT_RECYCLER_VIEW_POSITION).let { position ->
+                postponeEnterTransition()
                 rocketListAdapter.setSelectedItemPosition(position)
             }
         }
-
-        postponeEnterTransition()
     }
 
     override fun onRocketItemClick(view: View, rocket: Rocket) {
@@ -134,33 +133,10 @@ class RocketListFragment : Fragment(), RocketListAdapterListener, CompoundButton
     }
 
     override fun onRefresh() {
+        recyclerViewState = null
         bundle = null
         switchFilterByActive.isChecked = false
         rocketListAdapter.submitList(null)
         rocketListViewModel.fetchRocketList()
-    }
-
-    private fun scrollToPosition(position: Int) {
-        recyclerView.addOnLayoutChangeListener(object : View.OnLayoutChangeListener {
-            override fun onLayoutChange(v: View,
-                                        left: Int,
-                                        top: Int,
-                                        right: Int,
-                                        bottom: Int,
-                                        oldLeft: Int,
-                                        oldTop: Int,
-                                        oldRight: Int,
-                                        oldBottom: Int) {
-                recyclerView.removeOnLayoutChangeListener(this)
-                val layoutManager = recyclerView.layoutManager
-                val viewAtPosition = layoutManager?.findViewByPosition(position)
-                if (viewAtPosition == null || layoutManager
-                                .isViewPartiallyVisible(viewAtPosition, false, true)) {
-                    layoutManager?.let {
-                        recyclerView.post { it.scrollToPosition(position) }
-                    }
-                }
-            }
-        })
     }
 }
