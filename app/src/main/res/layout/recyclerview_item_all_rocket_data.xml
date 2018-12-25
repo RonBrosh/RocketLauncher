@@ -5,12 +5,16 @@
     android:layout_height="wrap_content"
     android:layout_marginStart="@dimen/spacing_normal"
     android:layout_marginTop="@dimen/spacing_normal"
+    android:id="@+id/rocketCardView"
     android:layout_marginEnd="@dimen/spacing_normal"
     android:clickable="true"
+    android:clipChildren="false"
     android:foreground="?android:attr/selectableItemBackground"
     app:cardBackgroundColor="@color/white"
     app:cardCornerRadius="@dimen/card_view_corner_radios"
-    app:cardElevation="@dimen/elevation_normal">
+    app:cardElevation="@dimen/elevation_normal"
+    app:cardPreventCornerOverlap="true"
+    app:cardUseCompatPadding="true">
 
     <include layout="@layout/layout_rocket_details" />
 

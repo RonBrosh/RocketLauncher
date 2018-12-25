@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.example.ronbrosh.rocketlauncher.R
@@ -52,7 +53,7 @@ class RocketDetailsFragment : Fragment() {
         super.onCreate(savedInstanceState)
         postponeEnterTransition()
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            sharedElementEnterTransition = TransitionInflater.from(context).inflateTransition(android.R.transition.move)
+            sharedElementEnterTransition = TransitionInflater.from(context).inflateTransition(R.transition.rocket_enter_transition)
         }
     }
 
@@ -93,11 +94,9 @@ class RocketDetailsFragment : Fragment() {
 
     private fun initTransitionElement(rootView: View) {
         arguments?.let { arguments ->
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                val transitionName: String = arguments.getString(INTENT_EXTRA_TRANSITION_NAME, "")
-                val sharedElement: View = rootView.findViewById<View>(R.id.rocketDetailsContainer)
-                sharedElement.transitionName = transitionName
-            }
+            val transitionName: String = arguments.getString(INTENT_EXTRA_TRANSITION_NAME, "")
+            val sharedElement: View = rootView.findViewById<View>(R.id.transitionView)
+            ViewCompat.setTransitionName(sharedElement, transitionName)
         }
     }
 

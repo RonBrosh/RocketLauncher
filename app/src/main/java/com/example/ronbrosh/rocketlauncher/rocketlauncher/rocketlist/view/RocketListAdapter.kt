@@ -1,5 +1,6 @@
 package com.example.ronbrosh.rocketlauncher.rocketlauncher.rocketlist.view
 
+import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,7 +14,6 @@ import com.example.ronbrosh.rocketlauncher.R
 import com.example.ronbrosh.rocketlauncher.model.Rocket
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
-import java.lang.Exception
 import java.util.concurrent.atomic.AtomicBoolean
 
 class RocketListAdapter : ListAdapter<Rocket, RocketListAdapter.RocketListViewHolder>(ItemCallBack) {
@@ -31,16 +31,16 @@ class RocketListAdapter : ListAdapter<Rocket, RocketListAdapter.RocketListViewHo
     }
 
     inner class RocketListViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
-        val rocketDetailsContainer: View
+        val transitionView: View
         val textViewRocketName: TextView
         val textViewRocketCountry: TextView
         val textViewRocketEnginesCount: TextView
         val imageViewPreview: ImageView
-        var isTransitionAlreadyStarted: AtomicBoolean = AtomicBoolean()
+        private var isTransitionAlreadyStarted: AtomicBoolean = AtomicBoolean()
 
         init {
             itemView.setOnClickListener(this)
-            rocketDetailsContainer = itemView.findViewById(R.id.rocketDetailsContainer)
+            transitionView = itemView.findViewById(R.id.transitionView)
             textViewRocketName = itemView.findViewById(R.id.textViewRocketName)
             textViewRocketCountry = itemView.findViewById(R.id.textViewRocketCountry)
             textViewRocketEnginesCount = itemView.findViewById(R.id.textViewRocketEnginesCount)
@@ -50,12 +50,13 @@ class RocketListAdapter : ListAdapter<Rocket, RocketListAdapter.RocketListViewHo
         override fun onClick(view: View?) {
             selectedItemPosition = adapterPosition
             if (selectedItemPosition != RecyclerView.NO_POSITION) {
-                listener?.onRocketItemClick(rocketDetailsContainer, getItem(selectedItemPosition))
+                listener?.onRocketItemClick(this, getItem(selectedItemPosition))
             }
         }
 
         fun bind(rocket: Rocket) {
-            ViewCompat.setTransitionName(rocketDetailsContainer, rocket.rocketId)
+            if (Build.VERSION.SDK_INT >= 21)
+                transitionView.transitionName = rocket.rocketId
 
             textViewRocketName.text = rocket.name
             textViewRocketCountry.text = rocket.country

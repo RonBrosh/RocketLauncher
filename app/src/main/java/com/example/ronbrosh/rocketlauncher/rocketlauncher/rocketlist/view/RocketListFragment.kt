@@ -2,7 +2,6 @@ package com.example.ronbrosh.rocketlauncher.rocketlauncher.rocketlist.view
 
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,6 +19,8 @@ import com.example.ronbrosh.rocketlauncher.model.Rocket
 import com.example.ronbrosh.rocketlauncher.rocketlauncher.rocketdetails.view.RocketDetailsFragment
 import com.example.ronbrosh.rocketlauncher.rocketlauncher.rocketlist.model.RocketListViewModel
 import android.os.Parcelable
+import android.transition.TransitionInflater
+import android.transition.TransitionSet
 
 
 class RocketListFragment : Fragment(), RocketListAdapterListener, CompoundButton.OnCheckedChangeListener, SwipeRefreshLayout.OnRefreshListener {
@@ -66,6 +67,10 @@ class RocketListFragment : Fragment(), RocketListAdapterListener, CompoundButton
         // Init swipe Refresh Layout.
         swipeRefreshLayout = rootView.findViewById(R.id.swipeRefreshLayout)
         swipeRefreshLayout.setOnRefreshListener(this)
+
+        // Init transition.
+        exitTransition = TransitionInflater.from(context).inflateTransition(R.transition.rocket_exit_transition)
+
         return rootView
     }
 
@@ -105,13 +110,16 @@ class RocketListFragment : Fragment(), RocketListAdapterListener, CompoundButton
         }
     }
 
-    override fun onRocketItemClick(view: View, rocket: Rocket) {
+    override fun onRocketItemClick(viewHolder: RecyclerView.ViewHolder, rocket: Rocket) {
+        val rocketViewHolder = viewHolder as RocketListAdapter.RocketListViewHolder
+        (exitTransition as TransitionSet).excludeTarget(rocketViewHolder.transitionView, true)
+
         activity?.let { activity ->
             val fragmentTransaction = activity.supportFragmentManager.beginTransaction()
             fragmentTransaction.setReorderingAllowed(true)
             if (Build.VERSION.SDK_INT >= 21) {
-                ViewCompat.getTransitionName(view)?.let { transitionName ->
-                    fragmentTransaction.addSharedElement(view, transitionName)
+                ViewCompat.getTransitionName(rocketViewHolder.transitionView)?.let { transitionName ->
+                    fragmentTransaction.addSharedElement(rocketViewHolder.transitionView, transitionName)
                     fragmentTransaction.replace(R.id.fragmentContainer, RocketDetailsFragment.newInstance(rocket.rocketId, rocket.name, transitionName), RocketDetailsFragment.TAG)
                 }
             } else {
