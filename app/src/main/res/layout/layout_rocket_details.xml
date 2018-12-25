@@ -5,8 +5,7 @@
     android:id="@+id/rocketDetailsContainer"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/lightGray"
-    android:transitionName="@string/rocket_details_transition_name">
+    android:background="@color/lightGray">
 
     <ImageView
         android:id="@+id/imageViewPreview"

@@ -8,7 +8,6 @@
     <string name="filter_by_active">Show only active rockets</string>
 
     <!-- Rocket List screen related -->
-    <string name="rocket_details_transition_name">rocket_details_transition_name</string>
 
     <!-- Rocket Details screen related -->
     <string name="launch_per_year">Launches / Year</string>

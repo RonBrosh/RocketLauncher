@@ -5,15 +5,20 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.view.ViewCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.ronbrosh.rocketlauncher.R
 import com.example.ronbrosh.rocketlauncher.model.Rocket
+import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
+import java.lang.Exception
+import java.util.concurrent.atomic.AtomicBoolean
 
 class RocketListAdapter : ListAdapter<Rocket, RocketListAdapter.RocketListViewHolder>(ItemCallBack) {
-    private var listener: RocketListItemClickListener? = null
+    private var listener: RocketListAdapterListener? = null
+    private var selectedItemPosition = 0
 
     private companion object ItemCallBack : DiffUtil.ItemCallback<Rocket>() {
         override fun areItemsTheSame(oldItem: Rocket, newItem: Rocket): Boolean {
@@ -26,11 +31,12 @@ class RocketListAdapter : ListAdapter<Rocket, RocketListAdapter.RocketListViewHo
     }
 
     inner class RocketListViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
-        private val rocketDetailsContainer: View
+        val rocketDetailsContainer: View
         val textViewRocketName: TextView
         val textViewRocketCountry: TextView
         val textViewRocketEnginesCount: TextView
         val imageViewPreview: ImageView
+        var isTransitionAlreadyStarted: AtomicBoolean = AtomicBoolean()
 
         init {
             itemView.setOnClickListener(this)
@@ -42,9 +48,37 @@ class RocketListAdapter : ListAdapter<Rocket, RocketListAdapter.RocketListViewHo
         }
 
         override fun onClick(view: View?) {
-            if (adapterPosition != RecyclerView.NO_POSITION) {
-                listener?.onRocketItemClick(rocketDetailsContainer, getItem(adapterPosition))
+            selectedItemPosition = adapterPosition
+            if (selectedItemPosition != RecyclerView.NO_POSITION) {
+                listener?.onRocketItemClick(rocketDetailsContainer, getItem(selectedItemPosition))
             }
+        }
+
+        fun bind(rocket: Rocket) {
+            ViewCompat.setTransitionName(rocketDetailsContainer, rocket.rocketId)
+
+            textViewRocketName.text = rocket.name
+            textViewRocketCountry.text = rocket.country
+            textViewRocketEnginesCount.text = String.format(itemView.context.getString(R.string.rocket_data_engines_count_format), rocket.engine.enginesCount)
+
+            Picasso.get().load(rocket.imageUrlList[0]).placeholder(R.drawable.image_place_holder).into(imageViewPreview, object : Callback {
+                override fun onError(e: Exception?) {
+                    onLoadFinished()
+                }
+
+                override fun onSuccess() {
+                    onLoadFinished()
+                }
+            })
+        }
+
+        private fun onLoadFinished() {
+            if (selectedItemPosition != adapterPosition)
+                return
+            else if (isTransitionAlreadyStarted.getAndSet(true))
+                return
+
+            listener?.onLastSelectedItemLoadFinished()
         }
     }
 
@@ -53,14 +87,18 @@ class RocketListAdapter : ListAdapter<Rocket, RocketListAdapter.RocketListViewHo
     }
 
     override fun onBindViewHolder(holder: RocketListViewHolder, position: Int) {
-        val rocket: Rocket = getItem(position)
-        holder.textViewRocketName.text = rocket.name
-        holder.textViewRocketCountry.text = rocket.country
-        holder.textViewRocketEnginesCount.text = String.format(holder.itemView.context.getString(R.string.rocket_data_engines_count_format), rocket.engine.enginesCount)
-        Picasso.get().load(rocket.imageUrlList[0]).placeholder(R.drawable.image_place_holder).into(holder.imageViewPreview)
+        holder.bind(getItem(position))
     }
 
-    fun setRocketListItemClickListener(rocketListItemClickListener: RocketListItemClickListener?) {
+    fun setRocketListItemClickListener(rocketListItemClickListener: RocketListAdapterListener?) {
         this.listener = rocketListItemClickListener
+    }
+
+    fun getSelectedItemPosition(): Int {
+        return selectedItemPosition
+    }
+
+    fun setSelectedItemPosition(selectedItemPosition: Int) {
+        this.selectedItemPosition = selectedItemPosition
     }
 }

@@ -3,6 +3,7 @@ package com.example.ronbrosh.rocketlauncher.rocketlauncher.rocketdetails.view
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
+import android.transition.TransitionInflater
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -22,6 +23,7 @@ import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.formatter.IValueFormatter
 import com.github.mikephil.charting.utils.ViewPortHandler
+import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 import java.util.*
 
@@ -33,14 +35,24 @@ class RocketDetailsFragment : Fragment() {
         val TAG: String = RocketDetailsFragment::class.java.simpleName
         private const val INTENT_EXTRA_ROCKET_ID: String = "INTENT_EXTRA_ROCKET_ID"
         private const val INTENT_EXTRA_ROCKET_NAME: String = "INTENT_EXTRA_ROCKET_NAME"
+        private const val INTENT_EXTRA_TRANSITION_NAME: String = "INTENT_EXTRA_TRANSITION_NAME"
 
-        fun newInstance(rocketId: String, rocketName: String): RocketDetailsFragment {
+        fun newInstance(rocketId: String, rocketName: String, transitionName: String): RocketDetailsFragment {
             val bundle = Bundle()
             bundle.putString(INTENT_EXTRA_ROCKET_ID, rocketId)
             bundle.putString(INTENT_EXTRA_ROCKET_NAME, rocketName)
+            bundle.putString(INTENT_EXTRA_TRANSITION_NAME, transitionName)
             val rocketDetailsFragment = RocketDetailsFragment()
             rocketDetailsFragment.arguments = bundle
             return rocketDetailsFragment
+        }
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        postponeEnterTransition()
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            sharedElementEnterTransition = TransitionInflater.from(context).inflateTransition(android.R.transition.move)
         }
     }
 
@@ -52,6 +64,8 @@ class RocketDetailsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        initTransitionElement(view)
+
         arguments?.let { arguments ->
             val rocketId = arguments.getString(INTENT_EXTRA_ROCKET_ID, "")
             val rocketName = arguments.getString(INTENT_EXTRA_ROCKET_NAME, "")
@@ -73,6 +87,16 @@ class RocketDetailsFragment : Fragment() {
                         setLineChartData(it.launchList)
                     }
                 })
+            }
+        }
+    }
+
+    private fun initTransitionElement(rootView: View) {
+        arguments?.let { arguments ->
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                val transitionName: String = arguments.getString(INTENT_EXTRA_TRANSITION_NAME, "")
+                val sharedElement: View = rootView.findViewById<View>(R.id.rocketDetailsContainer)
+                sharedElement.transitionName = transitionName
             }
         }
     }
@@ -155,7 +179,16 @@ class RocketDetailsFragment : Fragment() {
         view?.let {
             it.findViewById<TextView>(R.id.textViewRocketName).text = rocket.name
             it.findViewById<TextView>(R.id.textViewRocketCountry).text = rocket.country
-            Picasso.get().load(rocket.imageUrlList[0]).into(it.findViewById<ImageView>(R.id.imageViewPreview))
+            it.findViewById<TextView>(R.id.textViewRocketEnginesCount).text = String.format(getString(R.string.rocket_data_engines_count_format), rocket.engine.enginesCount)
+            Picasso.get().load(rocket.imageUrlList[0]).into(it.findViewById<ImageView>(R.id.imageViewPreview), object : Callback {
+                override fun onSuccess() {
+                    startPostponedEnterTransition()
+                }
+
+                override fun onError(e: Exception?) {
+                    startPostponedEnterTransition()
+                }
+            })
         }
     }
 }
