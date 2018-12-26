@@ -112,7 +112,7 @@ class RocketListFragment : Fragment(), RocketListAdapterListener, CompoundButton
 
     override fun onRocketItemClick(viewHolder: RecyclerView.ViewHolder, rocket: Rocket) {
         val rocketViewHolder = viewHolder as RocketListAdapter.RocketListViewHolder
-        (exitTransition as TransitionSet).excludeTarget(rocketViewHolder.transitionView, true)
+        (exitTransition as TransitionSet).excludeTarget(rocketViewHolder.itemView, true)
 
         activity?.let { activity ->
             val fragmentTransaction = activity.supportFragmentManager.beginTransaction()
