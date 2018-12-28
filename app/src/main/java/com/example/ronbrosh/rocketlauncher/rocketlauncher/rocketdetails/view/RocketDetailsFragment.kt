@@ -26,6 +26,7 @@ import com.github.mikephil.charting.formatter.IValueFormatter
 import com.github.mikephil.charting.utils.ViewPortHandler
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
+import kotlinx.android.synthetic.main.layout_rocket_details.view.*
 import java.util.*
 
 class RocketDetailsFragment : Fragment() {
@@ -94,9 +95,12 @@ class RocketDetailsFragment : Fragment() {
 
     private fun initTransitionElement(rootView: View) {
         arguments?.let { arguments ->
-            val transitionName: String = arguments.getString(INTENT_EXTRA_TRANSITION_NAME, "")
-            val sharedElement: View = rootView.findViewById<View>(R.id.transitionView)
-            ViewCompat.setTransitionName(sharedElement, transitionName)
+            val rocketId: String = arguments.getString(INTENT_EXTRA_TRANSITION_NAME, "")
+            val imageViewPreview: View = rootView.findViewById<View>(R.id.imageViewPreview)
+            val textContainer: View = rootView.findViewById<View>(R.id.textContainer)
+
+            ViewCompat.setTransitionName(imageViewPreview, getString(R.string.rocket_item_image_transition_name, rocketId))
+            ViewCompat.setTransitionName(textContainer, getString(R.string.rocket_item_text_container_transition_name, rocketId))
         }
     }
 

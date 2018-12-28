@@ -8,6 +8,8 @@
     <string name="filter_by_active">Show only active rockets</string>
 
     <!-- Rocket List screen related -->
+    <string name="rocket_item_image_transition_name">image_%1$s</string>
+    <string name="rocket_item_text_container_transition_name">text_container_%1$s</string>
 
     <!-- Rocket Details screen related -->
     <string name="launch_per_year">Launches / Year</string>

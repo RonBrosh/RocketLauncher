@@ -14,6 +14,7 @@ import com.example.ronbrosh.rocketlauncher.R
 import com.example.ronbrosh.rocketlauncher.model.Rocket
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
+import kotlinx.android.synthetic.main.layout_rocket_details.view.*
 import java.util.concurrent.atomic.AtomicBoolean
 
 class RocketListAdapter : ListAdapter<Rocket, RocketListAdapter.RocketListViewHolder>(ItemCallBack) {
@@ -31,20 +32,10 @@ class RocketListAdapter : ListAdapter<Rocket, RocketListAdapter.RocketListViewHo
     }
 
     inner class RocketListViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
-        val transitionView: View
-        val textViewRocketName: TextView
-        val textViewRocketCountry: TextView
-        val textViewRocketEnginesCount: TextView
-        val imageViewPreview: ImageView
         private var isTransitionAlreadyStarted: AtomicBoolean = AtomicBoolean()
 
         init {
             itemView.setOnClickListener(this)
-            transitionView = itemView.findViewById(R.id.transitionView)
-            textViewRocketName = itemView.findViewById(R.id.textViewRocketName)
-            textViewRocketCountry = itemView.findViewById(R.id.textViewRocketCountry)
-            textViewRocketEnginesCount = itemView.findViewById(R.id.textViewRocketEnginesCount)
-            imageViewPreview = itemView.findViewById(R.id.imageViewPreview)
         }
 
         override fun onClick(view: View?) {
@@ -55,14 +46,15 @@ class RocketListAdapter : ListAdapter<Rocket, RocketListAdapter.RocketListViewHo
         }
 
         fun bind(rocket: Rocket) {
-            if (Build.VERSION.SDK_INT >= 21)
-                transitionView.transitionName = rocket.rocketId
+            if (Build.VERSION.SDK_INT >= 21) {
+                itemView.imageViewPreview.transitionName = itemView.resources.getString(R.string.rocket_item_image_transition_name, rocket.rocketId)
+                itemView.textContainer.transitionName = itemView.resources.getString(R.string.rocket_item_text_container_transition_name, rocket.rocketId)
+            }
+            itemView.textViewRocketName.text = rocket.name
+            itemView.textViewRocketCountry.text = rocket.country
+            itemView.textViewRocketEnginesCount.text = String.format(itemView.context.getString(R.string.rocket_data_engines_count_format), rocket.engine.enginesCount)
 
-            textViewRocketName.text = rocket.name
-            textViewRocketCountry.text = rocket.country
-            textViewRocketEnginesCount.text = String.format(itemView.context.getString(R.string.rocket_data_engines_count_format), rocket.engine.enginesCount)
-
-            Picasso.get().load(rocket.imageUrlList[0]).placeholder(R.drawable.image_place_holder).into(imageViewPreview, object : Callback {
+            Picasso.get().load(rocket.imageUrlList[0]).placeholder(R.drawable.image_place_holder).into(itemView.imageViewPreview, object : Callback {
                 override fun onError(e: Exception?) {
                     onLoadFinished()
                 }

@@ -21,6 +21,7 @@ import com.example.ronbrosh.rocketlauncher.rocketlauncher.rocketlist.model.Rocke
 import android.os.Parcelable
 import android.transition.TransitionInflater
 import android.transition.TransitionSet
+import kotlinx.android.synthetic.main.layout_rocket_details.view.*
 
 
 class RocketListFragment : Fragment(), RocketListAdapterListener, CompoundButton.OnCheckedChangeListener, SwipeRefreshLayout.OnRefreshListener {
@@ -118,10 +119,9 @@ class RocketListFragment : Fragment(), RocketListAdapterListener, CompoundButton
             val fragmentTransaction = activity.supportFragmentManager.beginTransaction()
             fragmentTransaction.setReorderingAllowed(true)
             if (Build.VERSION.SDK_INT >= 21) {
-                ViewCompat.getTransitionName(rocketViewHolder.transitionView)?.let { transitionName ->
-                    fragmentTransaction.addSharedElement(rocketViewHolder.transitionView, transitionName)
-                    fragmentTransaction.replace(R.id.fragmentContainer, RocketDetailsFragment.newInstance(rocket.rocketId, rocket.name, transitionName), RocketDetailsFragment.TAG)
-                }
+                fragmentTransaction.addSharedElement(rocketViewHolder.itemView.imageViewPreview, ViewCompat.getTransitionName(viewHolder.itemView.imageViewPreview)!!)
+                fragmentTransaction.addSharedElement(rocketViewHolder.itemView.textContainer, ViewCompat.getTransitionName(rocketViewHolder.itemView.textContainer)!!)
+                fragmentTransaction.replace(R.id.fragmentContainer, RocketDetailsFragment.newInstance(rocket.rocketId, rocket.name, rocket.rocketId), RocketDetailsFragment.TAG)
             } else {
                 fragmentTransaction.replace(R.id.fragmentContainer, RocketDetailsFragment.newInstance(rocket.rocketId, rocket.name, ""), RocketDetailsFragment.TAG)
             }
