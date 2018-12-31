@@ -2,6 +2,9 @@ package com.example.ronbrosh.rocketlauncher.rocketlauncher.rocketlist.view
 
 import android.os.Build
 import android.os.Bundle
+import android.os.Parcelable
+import android.transition.TransitionInflater
+import android.transition.TransitionSet
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,10 +21,8 @@ import com.example.ronbrosh.rocketlauncher.R
 import com.example.ronbrosh.rocketlauncher.model.Rocket
 import com.example.ronbrosh.rocketlauncher.rocketlauncher.rocketdetails.view.RocketDetailsFragment
 import com.example.ronbrosh.rocketlauncher.rocketlauncher.rocketlist.model.RocketListViewModel
-import android.os.Parcelable
-import android.transition.TransitionInflater
-import android.transition.TransitionSet
 import kotlinx.android.synthetic.main.layout_rocket_details.view.*
+import kotlinx.android.synthetic.main.recyclerview_item_all_rocket_data.view.*
 
 
 class RocketListFragment : Fragment(), RocketListAdapterListener, CompoundButton.OnCheckedChangeListener, SwipeRefreshLayout.OnRefreshListener {
@@ -71,7 +72,19 @@ class RocketListFragment : Fragment(), RocketListAdapterListener, CompoundButton
 
         // Init transition.
         exitTransition = TransitionInflater.from(context).inflateTransition(R.transition.rocket_exit_transition)
-
+//        setExitSharedElementCallback(object : SharedElementCallback() {
+//            override fun onMapSharedElements(names: MutableList<String>?, sharedElements: MutableMap<String, View>?) {
+//                val viewHolder = recyclerView.findViewHolderForAdapterPosition(rocketListAdapter.getSelectedItemPosition())
+//                if (viewHolder?.itemView == null)
+//                    return
+//
+//                if (sharedElements == null || names == null)
+//                    return
+//
+//                sharedElements[names[0]] = viewHolder.itemView.imageViewPreview
+//                sharedElements[names[1]] = viewHolder.itemView.textContainer
+//            }
+//        })
         return rootView
     }
 
@@ -113,7 +126,7 @@ class RocketListFragment : Fragment(), RocketListAdapterListener, CompoundButton
 
     override fun onRocketItemClick(viewHolder: RecyclerView.ViewHolder, rocket: Rocket) {
         val rocketViewHolder = viewHolder as RocketListAdapter.RocketListViewHolder
-        (exitTransition as TransitionSet).excludeTarget(rocketViewHolder.itemView, true)
+        (exitTransition as TransitionSet).excludeTarget(rocketViewHolder.itemView.rocketCardView, true)
 
         activity?.let { activity ->
             val fragmentTransaction = activity.supportFragmentManager.beginTransaction()

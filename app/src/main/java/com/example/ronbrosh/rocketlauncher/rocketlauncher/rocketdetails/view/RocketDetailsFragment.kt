@@ -3,6 +3,7 @@ package com.example.ronbrosh.rocketlauncher.rocketlauncher.rocketdetails.view
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
+import android.transition.Slide
 import android.transition.TransitionInflater
 import android.view.LayoutInflater
 import android.view.View
@@ -26,7 +27,6 @@ import com.github.mikephil.charting.formatter.IValueFormatter
 import com.github.mikephil.charting.utils.ViewPortHandler
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.layout_rocket_details.view.*
 import java.util.*
 
 class RocketDetailsFragment : Fragment() {
@@ -53,21 +53,17 @@ class RocketDetailsFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         postponeEnterTransition()
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            sharedElementEnterTransition = TransitionInflater.from(context).inflateTransition(R.transition.rocket_enter_transition)
-        }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val rootView = inflater.inflate(R.layout.fragment_rocket_details, container, false)
         initLineChart(rootView)
+        initTransitionElement(rootView)
         return rootView
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initTransitionElement(view)
-
         arguments?.let { arguments ->
             val rocketId = arguments.getString(INTENT_EXTRA_ROCKET_ID, "")
             val rocketName = arguments.getString(INTENT_EXTRA_ROCKET_NAME, "")
@@ -94,13 +90,20 @@ class RocketDetailsFragment : Fragment() {
     }
 
     private fun initTransitionElement(rootView: View) {
-        arguments?.let { arguments ->
-            val rocketId: String = arguments.getString(INTENT_EXTRA_TRANSITION_NAME, "")
-            val imageViewPreview: View = rootView.findViewById<View>(R.id.imageViewPreview)
-            val textContainer: View = rootView.findViewById<View>(R.id.textContainer)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            arguments?.let { arguments ->
+                val rocketId: String = arguments.getString(INTENT_EXTRA_TRANSITION_NAME, "")
+                val imageViewPreview: View = rootView.findViewById<View>(R.id.imageViewPreview)
+                val textContainer: View = rootView.findViewById<View>(R.id.textContainer)
 
-            ViewCompat.setTransitionName(imageViewPreview, getString(R.string.rocket_item_image_transition_name, rocketId))
-            ViewCompat.setTransitionName(textContainer, getString(R.string.rocket_item_text_container_transition_name, rocketId))
+                ViewCompat.setTransitionName(imageViewPreview, getString(R.string.rocket_item_image_transition_name, rocketId))
+                ViewCompat.setTransitionName(textContainer, getString(R.string.rocket_item_text_container_transition_name, rocketId))
+            }
+
+            val rocketDetailsContainer: View = rootView.findViewById<View>(R.id.rocketDetailsContainer)
+            enterTransition = TransitionInflater.from(context).inflateTransition(R.transition.rocket_details_transition)
+            (enterTransition as Slide).excludeTarget(rocketDetailsContainer, true)
+            sharedElementEnterTransition = TransitionInflater.from(context).inflateTransition(R.transition.rocket_enter_transition)
         }
     }
 

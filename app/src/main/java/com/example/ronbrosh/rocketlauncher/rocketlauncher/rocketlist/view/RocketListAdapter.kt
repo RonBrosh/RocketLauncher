@@ -4,9 +4,6 @@ import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
-import androidx.core.view.ViewCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -15,6 +12,7 @@ import com.example.ronbrosh.rocketlauncher.model.Rocket
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.layout_rocket_details.view.*
+import kotlinx.android.synthetic.main.recyclerview_item_all_rocket_data.view.*
 import java.util.concurrent.atomic.AtomicBoolean
 
 class RocketListAdapter : ListAdapter<Rocket, RocketListAdapter.RocketListViewHolder>(ItemCallBack) {
@@ -36,6 +34,8 @@ class RocketListAdapter : ListAdapter<Rocket, RocketListAdapter.RocketListViewHo
 
         init {
             itemView.setOnClickListener(this)
+            if (Build.VERSION.SDK_INT >= 21)
+                itemView.rocketCardView.isTransitionGroup = true
         }
 
         override fun onClick(view: View?) {
