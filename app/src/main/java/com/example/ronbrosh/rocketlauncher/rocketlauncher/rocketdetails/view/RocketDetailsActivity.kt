@@ -3,16 +3,10 @@ package com.example.ronbrosh.rocketlauncher.rocketlauncher.rocketdetails.view
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
-import android.transition.Slide
-import android.transition.TransitionInflater
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.MenuItem
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.example.ronbrosh.rocketlauncher.R
 import com.example.ronbrosh.rocketlauncher.model.Launch
@@ -29,86 +23,52 @@ import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 import java.util.*
 
-class RocketDetailsFragment : Fragment() {
+class RocketDetailsActivity : AppCompatActivity() {
     private lateinit var rocketDetailsViewModel: RocketDetailsViewModel
     private lateinit var lineChart: LineChart
 
     companion object {
-        val TAG: String = RocketDetailsFragment::class.java.simpleName
-        private const val INTENT_EXTRA_ROCKET_ID: String = "INTENT_EXTRA_ROCKET_ID"
-        private const val INTENT_EXTRA_ROCKET_NAME: String = "INTENT_EXTRA_ROCKET_NAME"
-        private const val INTENT_EXTRA_TRANSITION_NAME: String = "INTENT_EXTRA_TRANSITION_NAME"
-
-        fun newInstance(rocketId: String, rocketName: String, transitionName: String): RocketDetailsFragment {
-            val bundle = Bundle()
-            bundle.putString(INTENT_EXTRA_ROCKET_ID, rocketId)
-            bundle.putString(INTENT_EXTRA_ROCKET_NAME, rocketName)
-            bundle.putString(INTENT_EXTRA_TRANSITION_NAME, transitionName)
-            val rocketDetailsFragment = RocketDetailsFragment()
-            rocketDetailsFragment.arguments = bundle
-            return rocketDetailsFragment
-        }
+        val TAG: String = RocketDetailsActivity::class.java.simpleName
+        const val INTENT_EXTRA_ROCKET_ID: String = "INTENT_EXTRA_ROCKET_ID"
+        const val INTENT_EXTRA_ROCKET_NAME: String = "INTENT_EXTRA_ROCKET_NAME"
+        const val INTENT_EXTRA_TRANSITION_NAME: String = "INTENT_EXTRA_TRANSITION_NAME"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        postponeEnterTransition()
-    }
+        setContentView(R.layout.activity_rocket_details)
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val rootView = inflater.inflate(R.layout.fragment_rocket_details, container, false)
-        initLineChart(rootView)
-        initTransitionElement(rootView)
-        return rootView
-    }
+        initLineChart()
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        arguments?.let { arguments ->
-            val rocketId = arguments.getString(INTENT_EXTRA_ROCKET_ID, "")
-            val rocketName = arguments.getString(INTENT_EXTRA_ROCKET_NAME, "")
+        val rocketId: String? = intent.extras?.getString(INTENT_EXTRA_ROCKET_ID, "")
+        val rocketName: String? = intent.extras?.getString(INTENT_EXTRA_ROCKET_NAME, "")
 
-            activity?.let { activity ->
-                // Set action bar title.
-                (activity as AppCompatActivity).supportActionBar?.let { actionBar ->
-                    actionBar.title = rocketName
-                    actionBar.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.let { supportActionBar ->
+            supportActionBar.title = rocketName
+            supportActionBar.setDisplayHomeAsUpEnabled(true)
+        }
+
+        // Init view model.
+        rocketId?.let { rocketId ->
+            rocketDetailsViewModel = RocketDetailsViewModel(application, rocketId)
+            rocketDetailsViewModel.getRocketWithLaunchListLiveData().observe(this, Observer {
+                initRocketDetails(it.rocket)
+                if (it.launchList.isEmpty()) {
+                    rocketDetailsViewModel.fetchRocketLaunchList(rocketId)
+                } else {
+                    setLineChartData(it.launchList)
                 }
-
-                // Init view model.
-                rocketDetailsViewModel = RocketDetailsViewModel(activity.application, rocketId)
-                rocketDetailsViewModel.getRocketWithLaunchListLiveData().observe(this, Observer {
-                    initRocketDetails(it.rocket)
-                    if (it.launchList.isEmpty()) {
-                        rocketDetailsViewModel.fetchRocketLaunchList(rocketId)
-                    } else {
-                        setLineChartData(it.launchList)
-                    }
-                })
-            }
+            })
         }
     }
 
-    private fun initTransitionElement(rootView: View) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            arguments?.let { arguments ->
-                val rocketId: String = arguments.getString(INTENT_EXTRA_TRANSITION_NAME, "")
-                val imageViewPreview: View = rootView.findViewById<View>(R.id.imageViewPreview)
-                val textContainer: View = rootView.findViewById<View>(R.id.textContainer)
-
-                ViewCompat.setTransitionName(imageViewPreview, getString(R.string.rocket_item_image_transition_name, rocketId))
-                ViewCompat.setTransitionName(textContainer, getString(R.string.rocket_item_text_container_transition_name, rocketId))
-            }
-
-            val rocketDetailsContainer: View = rootView.findViewById<View>(R.id.rocketDetailsContainer)
-            enterTransition = TransitionInflater.from(context).inflateTransition(R.transition.rocket_details_transition)
-            (enterTransition as Slide).excludeTarget(rocketDetailsContainer, true)
-            sharedElementEnterTransition = TransitionInflater.from(context).inflateTransition(R.transition.rocket_enter_transition)
-        }
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressed()
+        return true
     }
 
-    private fun initLineChart(rootView: View) {
-        lineChart = rootView.findViewById(R.id.lineChart)
+    private fun initLineChart() {
+        lineChart = findViewById(R.id.lineChart)
         lineChart.description.isEnabled = false
         lineChart.legend.isEnabled = false
         lineChart.setNoDataText(null)
@@ -182,19 +142,15 @@ class RocketDetailsFragment : Fragment() {
     }
 
     private fun initRocketDetails(rocket: Rocket) {
-        view?.let {
-            it.findViewById<TextView>(R.id.textViewRocketName).text = rocket.name
-            it.findViewById<TextView>(R.id.textViewRocketCountry).text = rocket.country
-            it.findViewById<TextView>(R.id.textViewRocketEnginesCount).text = String.format(getString(R.string.rocket_data_engines_count_format), rocket.engine.enginesCount)
-            Picasso.get().load(rocket.imageUrlList[0]).into(it.findViewById<ImageView>(R.id.imageViewPreview), object : Callback {
-                override fun onSuccess() {
-                    startPostponedEnterTransition()
-                }
+        findViewById<TextView>(R.id.textViewRocketName).text = rocket.name
+        findViewById<TextView>(R.id.textViewRocketCountry).text = rocket.country
+        findViewById<TextView>(R.id.textViewRocketEnginesCount).text = String.format(getString(R.string.rocket_data_engines_count_format), rocket.engine.enginesCount)
+        Picasso.get().load(rocket.imageUrlList[0]).into(findViewById(R.id.imageViewPreview), object : Callback {
+            override fun onSuccess() {
+            }
 
-                override fun onError(e: Exception?) {
-                    startPostponedEnterTransition()
-                }
-            })
-        }
+            override fun onError(e: Exception?) {
+            }
+        })
     }
 }

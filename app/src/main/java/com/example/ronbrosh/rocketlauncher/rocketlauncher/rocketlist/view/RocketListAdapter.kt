@@ -34,8 +34,6 @@ class RocketListAdapter : ListAdapter<Rocket, RocketListAdapter.RocketListViewHo
 
         init {
             itemView.setOnClickListener(this)
-            if (Build.VERSION.SDK_INT >= 21)
-                itemView.rocketCardView.isTransitionGroup = true
         }
 
         override fun onClick(view: View?) {
@@ -47,8 +45,7 @@ class RocketListAdapter : ListAdapter<Rocket, RocketListAdapter.RocketListViewHo
 
         fun bind(rocket: Rocket) {
             if (Build.VERSION.SDK_INT >= 21) {
-                itemView.imageViewPreview.transitionName = itemView.resources.getString(R.string.rocket_item_image_transition_name, rocket.rocketId)
-                itemView.textContainer.transitionName = itemView.resources.getString(R.string.rocket_item_text_container_transition_name, rocket.rocketId)
+                itemView.rocketDetailsContainer.transitionName = itemView.resources.getString(R.string.rocket_item_rocket_details_container_transition_name, rocket.rocketId)
             }
             itemView.textViewRocketName.text = rocket.name
             itemView.textViewRocketCountry.text = rocket.country

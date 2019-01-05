@@ -23,7 +23,11 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".rocketlauncher.RocketLauncherActivity"
+            android:name=".rocketlauncher.rocketlist.view.RocketListActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".rocketlauncher.rocketdetails.view.RocketDetailsActivity"
+            android:screenOrientation="portrait" />
+
     </application>
 </manifest>
