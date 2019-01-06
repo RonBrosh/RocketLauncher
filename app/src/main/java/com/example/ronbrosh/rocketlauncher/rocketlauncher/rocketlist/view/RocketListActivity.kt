@@ -4,9 +4,12 @@ import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.os.Parcelable
+import android.view.Window
 import android.widget.CompoundButton
 import android.widget.Switch
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityOptionsCompat
+import androidx.core.util.Pair
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -52,9 +55,6 @@ class RocketListActivity : AppCompatActivity(), RocketListAdapterListener, Compo
         swipeRefreshLayout = findViewById(R.id.swipeRefreshLayout)
         swipeRefreshLayout.setOnRefreshListener(this)
 
-        // Set action bar title.
-        supportActionBar?.title = getString(R.string.app_name)
-
         // Init view model.
         rocketListViewModel = RocketListViewModel(application)
         rocketListViewModel.getRocketListLiveData().observe(this, Observer {
@@ -95,10 +95,17 @@ class RocketListActivity : AppCompatActivity(), RocketListAdapterListener, Compo
         val intent = Intent(this, RocketDetailsActivity::class.java)
         intent.putExtra(RocketDetailsActivity.INTENT_EXTRA_ROCKET_ID, rocket.rocketId)
         intent.putExtra(RocketDetailsActivity.INTENT_EXTRA_ROCKET_NAME, rocket.name)
-        if (Build.VERSION.SDK_INT >= 21)
+        if (Build.VERSION.SDK_INT >= 21) {
             intent.putExtra(RocketDetailsActivity.INTENT_EXTRA_TRANSITION_NAME, viewHolder.itemView.rocketDetailsContainer.transitionName)
-
-        startActivity(intent)
+            val activityOptionsCompat: ActivityOptionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(this,
+                    Pair.create(findViewById(android.R.id.statusBarBackground), Window.STATUS_BAR_BACKGROUND_TRANSITION_NAME),
+                    Pair.create(findViewById(android.R.id.navigationBarBackground), Window.NAVIGATION_BAR_BACKGROUND_TRANSITION_NAME),
+                    Pair.create(findViewById(R.id.toolBar), getString(R.string.tool_bar_transition_name)),
+                    Pair.create(viewHolder.itemView.rocketDetailsContainer, viewHolder.itemView.rocketDetailsContainer.transitionName))
+            startActivity(intent, activityOptionsCompat.toBundle())
+        } else {
+            startActivity(intent)
+        }
     }
 
     override fun onLastSelectedItemLoadFinished() {

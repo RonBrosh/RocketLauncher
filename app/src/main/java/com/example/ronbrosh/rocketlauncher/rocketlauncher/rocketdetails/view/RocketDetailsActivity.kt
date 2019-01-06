@@ -3,10 +3,12 @@ package com.example.ronbrosh.rocketlauncher.rocketlauncher.rocketdetails.view
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
-import android.view.MenuItem
-import android.widget.ImageView
+import android.transition.TransitionInflater
+import android.view.View
+import android.view.ViewTreeObserver
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.util.Pair
 import androidx.lifecycle.Observer
 import com.example.ronbrosh.rocketlauncher.R
 import com.example.ronbrosh.rocketlauncher.model.Launch
@@ -43,6 +45,29 @@ class RocketDetailsActivity : AppCompatActivity() {
         val rocketId: String? = intent.extras?.getString(INTENT_EXTRA_ROCKET_ID, "")
         val rocketName: String? = intent.extras?.getString(INTENT_EXTRA_ROCKET_NAME, "")
 
+        // Init transitions.
+        if (Build.VERSION.SDK_INT >= 21) {
+            postponeEnterTransition()
+            window.decorView.viewTreeObserver.addOnPreDrawListener(object : ViewTreeObserver.OnPreDrawListener {
+                override fun onPreDraw(): Boolean {
+                    window.decorView.viewTreeObserver.removeOnPreDrawListener(this)
+                    startPostponedEnterTransition()
+                    return true
+                }
+            })
+
+            val transitionName: String? = intent.extras?.getString(INTENT_EXTRA_TRANSITION_NAME, "")
+            transitionName?.let { transitionName ->
+                findViewById<View>(R.id.rocketDetailsContainer).transitionName = transitionName
+            }
+            findViewById<View>(R.id.toolBar).transitionName = getString(R.string.tool_bar_transition_name)
+
+            window.enterTransition = TransitionInflater.from(this).inflateTransition(R.transition.activity_rocket_details_transition)
+            window.sharedElementEnterTransition = TransitionInflater.from(this).inflateTransition(R.transition.rocket_enter_transition)
+        }
+
+        // Setup title.
+        setSupportActionBar(findViewById(R.id.toolBar))
         supportActionBar?.let { supportActionBar ->
             supportActionBar.title = rocketName
             supportActionBar.setDisplayHomeAsUpEnabled(true)

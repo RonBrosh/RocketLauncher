@@ -13,8 +13,7 @@
         tools:ignore="GoogleAppIndexingWarning">
         <activity
             android:name=".splash.view.SplashActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

@@ -8,7 +8,9 @@
     <string name="filter_by_active">Show only active rockets</string>
 
     <!-- Rocket List screen related -->
+    <string name="rocket_list_activity_title">Rockets List</string>
     <string name="rocket_item_rocket_details_container_transition_name">rocketDetailsContainer_%1$s</string>
+    <string name="tool_bar_transition_name">toolBarTransition</string>
 
     <!-- Rocket Details screen related -->
     <string name="launch_per_year">Launches / Year</string>
