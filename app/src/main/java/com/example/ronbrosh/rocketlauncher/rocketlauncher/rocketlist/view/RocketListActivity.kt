@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.os.Parcelable
+import android.transition.TransitionInflater
 import android.view.Window
 import android.widget.CompoundButton
 import android.widget.Switch
@@ -38,6 +39,11 @@ class RocketListActivity : AppCompatActivity(), RocketListAdapterListener, Compo
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_rocket_list)
+
+        // Init transitions.
+        if (Build.VERSION.SDK_INT >= 21) {
+            window.exitTransition = TransitionInflater.from(this).inflateTransition(R.transition.activity_rocket_list_transition)
+        }
 
         // Init recycler view.
         recyclerView = findViewById(R.id.recyclerViewRocketData)
