@@ -43,6 +43,7 @@ class RocketListActivity : AppCompatActivity(), RocketListAdapterListener, Compo
         // Init transitions.
         if (Build.VERSION.SDK_INT >= 21) {
             window.exitTransition = TransitionInflater.from(this).inflateTransition(R.transition.activity_rocket_list_transition)
+            window.enterTransition = TransitionInflater.from(this).inflateTransition(R.transition.activity_rocket_list_transition)
         }
 
         // Init recycler view.

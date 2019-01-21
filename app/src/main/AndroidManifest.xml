@@ -25,6 +25,7 @@
             android:name=".rocketlauncher.rocketlist.view.RocketListActivity"
             android:screenOrientation="portrait" />
         <activity
+            android:theme="@style/TransparentBackground"
             android:name=".rocketlauncher.rocketdetails.view.RocketDetailsActivity"
             android:screenOrientation="portrait" />
 

@@ -62,6 +62,7 @@ class RocketDetailsActivity : AppCompatActivity() {
             }
             findViewById<View>(R.id.toolBar).transitionName = getString(R.string.tool_bar_transition_name)
 
+            window.exitTransition = TransitionInflater.from(this).inflateTransition(R.transition.activity_rocket_details_transition)
             window.enterTransition = TransitionInflater.from(this).inflateTransition(R.transition.activity_rocket_details_transition)
             window.sharedElementEnterTransition = TransitionInflater.from(this).inflateTransition(R.transition.rocket_enter_transition)
         }

@@ -14,4 +14,11 @@
     <style name="RocketLauncher.Switch" parent="Widget.AppCompat.CompoundButton.Switch">
         <item name="colorControlActivated">@color/colorPrimary</item>
     </style>
+
+    <style name="TransparentBackground" parent="@style/AppTheme">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:colorBackgroundCacheHint">@null</item>
+        <item name="android:windowIsTranslucent">true</item>
+    </style>
+
 </resources>

@@ -12,4 +12,6 @@
     <style name="RocketLauncher.Switch" parent="Widget.AppCompat.CompoundButton.Switch">
         <item name="colorControlActivated">@color/colorPrimary</item>
     </style>
+
+    <style name="TransparentBackground" parent="@style/AppTheme"></style>
 </resources>
