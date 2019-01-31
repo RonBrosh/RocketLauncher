@@ -104,11 +104,13 @@ class RocketListActivity : AppCompatActivity(), RocketListAdapterListener, Compo
         intent.putExtra(RocketDetailsActivity.INTENT_EXTRA_ROCKET_NAME, rocket.name)
         if (Build.VERSION.SDK_INT >= 21) {
             intent.putExtra(RocketDetailsActivity.INTENT_EXTRA_TRANSITION_NAME, viewHolder.itemView.rocketDetailsContainer.transitionName)
+
             val activityOptionsCompat: ActivityOptionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(this,
-                    Pair.create(findViewById(android.R.id.statusBarBackground), Window.STATUS_BAR_BACKGROUND_TRANSITION_NAME),
-                    Pair.create(findViewById(android.R.id.navigationBarBackground), Window.NAVIGATION_BAR_BACKGROUND_TRANSITION_NAME),
+                    Pair.create(window.decorView.findViewById(android.R.id.statusBarBackground), Window.STATUS_BAR_BACKGROUND_TRANSITION_NAME),
+                    Pair.create(window.decorView.findViewById(android.R.id.navigationBarBackground), Window.NAVIGATION_BAR_BACKGROUND_TRANSITION_NAME),
                     Pair.create(findViewById(R.id.toolBar), getString(R.string.tool_bar_transition_name)),
                     Pair.create(viewHolder.itemView.rocketDetailsContainer, viewHolder.itemView.rocketDetailsContainer.transitionName))
+
             startActivity(intent, activityOptionsCompat.toBundle())
         } else {
             startActivity(intent)
