@@ -8,6 +8,16 @@
     android:background="@color/lightGray">
 
     <ImageView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:scaleType="centerInside"
+        android:src="@drawable/image_place_holder"
+        app:layout_constraintBottom_toBottomOf="@+id/imageViewPreview"
+        app:layout_constraintEnd_toEndOf="@+id/imageViewPreview"
+        app:layout_constraintStart_toStartOf="@+id/imageViewPreview"
+        app:layout_constraintTop_toTopOf="@+id/imageViewPreview" />
+
+    <ImageView
         android:id="@+id/imageViewPreview"
         android:layout_width="0dp"
         android:layout_height="0dp"

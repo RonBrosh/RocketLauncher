@@ -19,6 +19,7 @@ import com.example.ronbrosh.rocketlauncher.R
 import com.example.ronbrosh.rocketlauncher.model.Rocket
 import com.example.ronbrosh.rocketlauncher.rocketlauncher.rocketdetails.view.RocketDetailsActivity
 import com.example.ronbrosh.rocketlauncher.rocketlauncher.rocketlist.model.RocketListViewModel
+import com.example.ronbrosh.rocketlauncher.utils.AppUtil
 import kotlinx.android.synthetic.main.layout_rocket_details.view.*
 
 class RocketListActivity : AppCompatActivity(), RocketListAdapterListener, CompoundButton.OnCheckedChangeListener, SwipeRefreshLayout.OnRefreshListener {

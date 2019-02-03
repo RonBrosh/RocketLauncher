@@ -8,8 +8,8 @@ import android.view.View
 import android.view.ViewTreeObserver
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.util.Pair
 import androidx.lifecycle.Observer
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.ronbrosh.rocketlauncher.R
 import com.example.ronbrosh.rocketlauncher.model.Launch
 import com.example.ronbrosh.rocketlauncher.model.Rocket
@@ -25,9 +25,10 @@ import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 import java.util.*
 
-class RocketDetailsActivity : AppCompatActivity() {
+class RocketDetailsActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListener {
     private lateinit var rocketDetailsViewModel: RocketDetailsViewModel
     private lateinit var lineChart: LineChart
+    private lateinit var swipeRefreshLayout: SwipeRefreshLayout
 
     companion object {
         val TAG: String = RocketDetailsActivity::class.java.simpleName
@@ -74,6 +75,10 @@ class RocketDetailsActivity : AppCompatActivity() {
             supportActionBar.setDisplayHomeAsUpEnabled(true)
         }
 
+        // Init swipe Refresh Layout.
+        swipeRefreshLayout = findViewById(R.id.swipeRefreshLayout)
+        swipeRefreshLayout.setOnRefreshListener(this)
+
         // Init view model.
         rocketId?.let { rocketId ->
             rocketDetailsViewModel = RocketDetailsViewModel(application, rocketId)
@@ -84,6 +89,10 @@ class RocketDetailsActivity : AppCompatActivity() {
                 } else {
                     setLineChartData(it.launchList)
                 }
+            })
+
+            rocketDetailsViewModel.getLoadingLiveData().observe(this, Observer {
+                swipeRefreshLayout.isRefreshing = it
             })
         }
     }
@@ -178,5 +187,9 @@ class RocketDetailsActivity : AppCompatActivity() {
             override fun onError(e: Exception?) {
             }
         })
+    }
+
+    override fun onRefresh() {
+        rocketDetailsViewModel.refresh()
     }
 }

@@ -2,7 +2,6 @@ package com.example.ronbrosh.rocketlauncher.utils
 
 import android.os.Handler
 import android.os.HandlerThread
-import android.util.Log
 
 
 class AppUtil {

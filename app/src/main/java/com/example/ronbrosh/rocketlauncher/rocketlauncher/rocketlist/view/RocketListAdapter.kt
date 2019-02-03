@@ -51,7 +51,7 @@ class RocketListAdapter : ListAdapter<Rocket, RocketListAdapter.RocketListViewHo
             itemView.textViewRocketCountry.text = rocket.country
             itemView.textViewRocketEnginesCount.text = String.format(itemView.context.getString(R.string.rocket_data_engines_count_format), rocket.engine.enginesCount)
 
-            Picasso.get().load(rocket.imageUrlList[0]).placeholder(R.drawable.image_place_holder).into(itemView.imageViewPreview, object : Callback {
+            Picasso.get().load(rocket.imageUrlList[0]).into(itemView.imageViewPreview, object : Callback {
                 override fun onError(e: Exception?) {
                     onLoadFinished()
                 }

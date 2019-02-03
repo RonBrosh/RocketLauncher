@@ -50,4 +50,10 @@ class RocketDetailsViewModel(application: Application, rocketId: String) : ViewM
             }
         })
     }
+
+    fun refresh() {
+        rocketWithLaunchListLiveData.value?.rocket?.let {
+            fetchRocketLaunchList(it.rocketId)
+        }
+    }
 }
