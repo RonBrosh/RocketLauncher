@@ -1,17 +1,22 @@
 <resources>
 
-    <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <!-- Full screen theme -->
+    <style name="FullScreenTheme" parent="Theme.AppCompat.Light">
+        <item name="android:windowBackground">@color/colorPrimary</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowFullscreen">true</item>
+    </style>
+
+    <!-- Activity with toolbar theme -->
+    <style name="ToolBarTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
     </style>
 
+    <!-- Switch theme -->
     <style name="RocketLauncher.Switch" parent="Widget.AppCompat.CompoundButton.Switch">
         <item name="colorControlActivated">@color/colorPrimary</item>
     </style>
-
-    <style name="TransparentBackground" parent="@style/AppTheme"></style>
 </resources>

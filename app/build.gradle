@@ -47,12 +47,12 @@ dependencies {
     implementation 'com.squareup.okhttp3:logging-interceptor:3.12.0'
 
     // Room
-    def room_version = "2.1.0-alpha03"
+    def room_version = "2.1.0-alpha04"
     implementation "androidx.room:room-runtime:$room_version"
     kapt "androidx.room:room-compiler:$room_version"
 
     // RecyclerView
-    implementation 'androidx.recyclerview:recyclerview:1.1.0-alpha01'
+    implementation 'androidx.recyclerview:recyclerview:1.1.0-alpha02'
 
     // CardView
     implementation 'androidx.cardview:cardview:1.0.0'

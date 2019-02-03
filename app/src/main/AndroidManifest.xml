@@ -8,12 +8,11 @@
         android:allowBackup="true"
         android:icon="@drawable/ic_rocket"
         android:label="@string/app_name"
-        android:supportsRtl="true"
-        android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
         <activity
             android:name=".splash.view.SplashActivity"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:theme="@style/FullScreenTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -22,12 +21,8 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".rocketlauncher.rocketlist.view.RocketListActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:theme="@style/TransparentBackground"
-            android:name=".rocketlauncher.rocketdetails.view.RocketDetailsActivity"
-            android:screenOrientation="portrait" />
-
+            android:name=".rocketlauncher.RocketLauncherActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/ToolBarTheme" />
     </application>
 </manifest>
