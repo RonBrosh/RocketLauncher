@@ -9,8 +9,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.ronbrosh.rocketlauncher.R
 import com.example.ronbrosh.rocketlauncher.model.Rocket
-import com.squareup.picasso.Callback
-import com.squareup.picasso.Picasso
+import com.example.ronbrosh.rocketlauncher.rocketlauncher.view.ImageViewPagerAdapter
 import kotlinx.android.synthetic.main.layout_rocket_details.view.*
 import kotlinx.android.synthetic.main.recyclerview_item_all_rocket_data.view.*
 import java.util.concurrent.atomic.AtomicBoolean
@@ -33,7 +32,7 @@ class RocketListAdapter : ListAdapter<Rocket, RocketListAdapter.RocketListViewHo
         private var isTransitionAlreadyStarted: AtomicBoolean = AtomicBoolean()
 
         init {
-            itemView.setOnClickListener(this)
+            itemView.showDetails.setOnClickListener(this)
         }
 
         override fun onClick(view: View?) {
@@ -44,22 +43,10 @@ class RocketListAdapter : ListAdapter<Rocket, RocketListAdapter.RocketListViewHo
         }
 
         fun bind(rocket: Rocket) {
-            if (Build.VERSION.SDK_INT >= 21) {
-                itemView.rocketDetailsContainer.transitionName = itemView.resources.getString(R.string.rocket_item_rocket_details_container_transition_name, rocket.rocketId)
-            }
             itemView.textViewRocketName.text = rocket.name
             itemView.textViewRocketCountry.text = rocket.country
             itemView.textViewRocketEnginesCount.text = String.format(itemView.context.getString(R.string.rocket_data_engines_count_format), rocket.engine.enginesCount)
-
-            Picasso.get().load(rocket.imageUrlList[0]).into(itemView.imageViewPreview, object : Callback {
-                override fun onError(e: Exception?) {
-                    onLoadFinished()
-                }
-
-                override fun onSuccess() {
-                    onLoadFinished()
-                }
-            })
+            itemView.viewPager.adapter = ImageViewPagerAdapter(rocket.imageUrlList)
         }
 
         private fun onLoadFinished() {

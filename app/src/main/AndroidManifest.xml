@@ -21,7 +21,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".rocketlauncher.RocketLauncherActivity"
+            android:name=".rocketlauncher.view.RocketLauncherActivity"
             android:screenOrientation="portrait"
             android:theme="@style/ToolBarTheme" />
     </application>

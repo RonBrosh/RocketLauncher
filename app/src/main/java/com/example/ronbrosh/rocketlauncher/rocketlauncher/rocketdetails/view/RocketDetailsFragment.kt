@@ -9,11 +9,16 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import androidx.viewpager.widget.ViewPager
 import com.example.ronbrosh.rocketlauncher.R
 import com.example.ronbrosh.rocketlauncher.model.Launch
 import com.example.ronbrosh.rocketlauncher.model.Rocket
 import com.example.ronbrosh.rocketlauncher.rocketlauncher.rocketdetails.view.model.RocketDetailsViewModel
+import com.example.ronbrosh.rocketlauncher.rocketlauncher.view.ImageViewPagerAdapter
 import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.Entry
@@ -23,12 +28,17 @@ import com.github.mikephil.charting.formatter.IValueFormatter
 import com.github.mikephil.charting.utils.ViewPortHandler
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
+import kotlinx.android.synthetic.main.layout_rocket_details.view.*
 import java.util.*
 
 class RocketDetailsFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
     private var rocketDetailsViewModel: RocketDetailsViewModel? = null
     private lateinit var lineChart: LineChart
+    private lateinit var viewPager: ViewPager
     private lateinit var swipeRefreshLayout: SwipeRefreshLayout
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var rocketDetailsAdapter: RocketDetailsAdapter
+    private lateinit var imageViewPagerAdapter: ImageViewPagerAdapter
 
     companion object {
         private const val BUNDLE_EXTRA_ROCKET_ID: String = "BUNDLE_EXTRA_ROCKET_ID"
@@ -122,13 +132,9 @@ class RocketDetailsFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
         view?.findViewById<TextView>(R.id.textViewRocketName)?.text = rocket.name
         view?.findViewById<TextView>(R.id.textViewRocketCountry)?.text = rocket.country
         view?.findViewById<TextView>(R.id.textViewRocketEnginesCount)?.text = String.format(getString(R.string.rocket_data_engines_count_format), rocket.engine.enginesCount)
-        Picasso.get().load(rocket.imageUrlList[0]).into(view?.findViewById(R.id.imageViewPreview), object : Callback {
-            override fun onSuccess() {
-            }
 
-            override fun onError(e: Exception?) {
-            }
-        })
+        imageViewPagerAdapter = ImageViewPagerAdapter(rocket.imageUrlList)
+        viewPager.adapter = imageViewPagerAdapter
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -136,9 +142,20 @@ class RocketDetailsFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
 
         initLineChart(rootView)
 
+        // Init recycler view.
+        recyclerView = rootView.findViewById(R.id.recyclerViewRocketLaunches)
+        recyclerView.setHasFixedSize(true)
+        recyclerView.addItemDecoration(DividerItemDecoration(context, LinearLayoutManager.VERTICAL))
+        recyclerView.layoutManager = LinearLayoutManager(activity, RecyclerView.VERTICAL, false)
+        rocketDetailsAdapter = RocketDetailsAdapter()
+        recyclerView.adapter = rocketDetailsAdapter
+
         // Init swipe Refresh Layout.
         swipeRefreshLayout = rootView.findViewById(R.id.swipeRefreshLayout)
         swipeRefreshLayout.setOnRefreshListener(this)
+
+        // Init view pager.
+        viewPager = rootView.findViewById(R.id.viewPager)
 
         return rootView
     }
@@ -149,10 +166,13 @@ class RocketDetailsFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
             rocketDetailsViewModel = RocketDetailsViewModel(activity!!.application, rocketId)
             rocketDetailsViewModel?.getRocketWithLaunchListLiveData()?.observe(this, Observer { data ->
                 initRocketDetails(data.rocket)
+
                 if (data.launchList.isEmpty()) {
                     rocketDetailsViewModel?.fetchRocketLaunchList(rocketId)
                 } else {
-                    setLineChartData(data.launchList)
+                    val launchList: List<Launch> = data.launchList.sortedByDescending { it.year }
+                    setLineChartData(launchList)
+                    rocketDetailsAdapter.setData(launchList)
                 }
             })
 

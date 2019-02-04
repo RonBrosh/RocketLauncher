@@ -1,4 +1,4 @@
-package com.example.ronbrosh.rocketlauncher.rocketlauncher
+package com.example.ronbrosh.rocketlauncher.rocketlauncher.view
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity

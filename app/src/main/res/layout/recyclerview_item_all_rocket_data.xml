@@ -7,7 +7,7 @@
     android:layout_marginStart="@dimen/spacing_normal"
     android:layout_marginTop="@dimen/spacing_normal"
     android:layout_marginEnd="@dimen/spacing_normal"
-    android:clickable="true"
+    android:clickable="false"
     android:clipChildren="false"
     android:foreground="?android:attr/selectableItemBackground"
     app:cardBackgroundColor="@color/white"
@@ -16,6 +16,26 @@
     app:cardPreventCornerOverlap="true"
     app:cardUseCompatPadding="true">
 
-    <include layout="@layout/layout_rocket_details" />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <include
+            android:id="@+id/detailsContainer"
+            layout="@layout/layout_rocket_details" />
+
+        <TextView
+            android:id="@+id/showDetails"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/spacing_normal"
+            android:text="@string/show_details_button"
+            android:textAllCaps="true"
+            android:textColor="@drawable/primary_color_text_selector"
+            android:textSize="@dimen/text_big"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/detailsContainer" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.cardview.widget.CardView>

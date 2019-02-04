@@ -6,6 +6,7 @@
     <string name="rocket_data_country_label">Country:</string>
     <string name="rocket_data_engines_count_format">%s Engines</string>
     <string name="filter_by_active">Show only active rockets</string>
+    <string name="show_details_button">Show</string>
 
     <!-- Rocket List screen related -->
     <string name="rocket_list_title">Rockets List</string>
@@ -15,5 +16,7 @@
     <!-- Rocket Details screen related -->
     <string name="launch_per_year">Launches / Year</string>
     <string name="line_chart_no_data_text">No chart data available</string>
+    <string name="launch_successful">Launch was successful!</string>
+    <string name="launch_failed">Launch failed…</string>
 
 </resources>

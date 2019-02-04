@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/swipeRefreshLayout"
     android:layout_width="match_parent"
-    android:background="@color/white"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/white">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -29,9 +29,9 @@
                     android:layout_width="0dp"
                     android:layout_height="2dp"
                     android:layout_marginStart="@dimen/spacing_normal"
-                    android:layout_marginTop="@dimen/spacing_normal"
+                    android:layout_marginTop="@dimen/spacing_large"
                     android:layout_marginEnd="@dimen/spacing_normal"
-                    android:background="@color/lightGray"
+                    android:background="@color/colorAccent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/rocketDetailsContainer" />
@@ -40,7 +40,7 @@
                     android:id="@+id/lineChartTitle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/spacing_normal"
+                    android:layout_marginTop="@dimen/spacing_large"
                     android:gravity="center"
                     android:text="@string/launch_per_year"
                     android:textColor="@color/colorPrimary"
@@ -64,9 +64,9 @@
                     android:layout_width="0dp"
                     android:layout_height="2dp"
                     android:layout_marginStart="@dimen/spacing_normal"
-                    android:layout_marginTop="@dimen/spacing_normal"
+                    android:layout_marginTop="@dimen/spacing_big"
                     android:layout_marginEnd="@dimen/spacing_normal"
-                    android:background="@color/lightGray"
+                    android:background="@color/colorAccent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/lineChart" />
@@ -75,16 +75,15 @@
                     android:id="@+id/recyclerViewRocketLaunches"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/spacing_normal"
+                    android:layout_marginTop="@dimen/spacing_large"
                     android:clipToPadding="false"
                     android:layoutAnimation="@anim/recyclerview_add_item"
-                    android:paddingBottom="@dimen/spacing_normal"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/lineChartDivider"
                     tools:itemCount="5"
                     tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    tools:listitem="@layout/recyclerview_item_all_rocket_data"
+                    tools:listitem="@layout/recyclerview_item_launch_data"
                     tools:orientation="vertical" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
